@@ -1,0 +1,48 @@
+{
+  "ID": {
+    "nav": {
+      "markets": "Pasar",
+      "news": "Berita",
+      "career": "Karir",
+      "about": "Tentang Kami"
+    },
+    "landingPage": {
+      "title": "Berita & Artikel",
+      "desc": "Lorem Ipsum Dolor Sit Amet"
+    },
+    "smallDescription": {
+      "subTitle": "Konsultan",
+      "desc": "PT. SAVANA ANUGERAH LESTARI (“SAL”) adalah Perusahaan yang bergerak di Bidang Jasa Konsultansi (Bidang Lingkungan dan sosial, Bidang Kehutanan  Bidang Pertanian, Bidang Pertambangan, Bidang Industri, Transportasi, Bidang Teknologi Informasi dan Pemetaan). SAL didukung oleh para Tenaga Ahli Professional dari berbagai disiplin ilmu yang telah berpengalaman bekerja ditingkat local, Nasional, maupun international.",
+      "button": "Baca Lebih Lanjut"
+    },
+    "slideShow": {
+      "title": "Berita & Artikel"
+    },
+    "market": {
+      "title": "Pasar Kami"
+    }
+  },
+  "EN": {
+    "nav": {
+      "markets": "Markets",
+      "news": "News",
+      "career": "Career",
+      "about": "About Us"
+    },
+    "landingPage": {
+      "title": "News & Article",
+      "desc": "Lorem Ipsum Dolor Sit Amet"
+    },
+    "smallDescription": {
+      "subTitle": "Consultant",
+      "desc": "PT. SAVANA ANUGERAH LESTARI (“SAL”) is a company operating in the Consultancy Services Sector (Environmental and social Sector, Forestry Sector, Agricultural Sector, Mining Sector, Industrial Sector, Transportation, Information Technology and Mapping Sector). SAL is supported by professional experts from various scientific disciplines who have experience working at local, national and international levels.",
+      "button": "Read More"
+    },
+    "slideShow": {
+      "title": "News & Article"
+    },
+    "market": {
+      "title": "Our Markets"
+    }
+  }
+}
