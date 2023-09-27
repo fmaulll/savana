@@ -1,5 +1,11 @@
 import { createContext, FC, useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import { createClient } from "@supabase/supabase-js";
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_KEY
+);
 
 const initialValue = {
   user: null,
@@ -8,6 +14,8 @@ const initialValue = {
   loading: false,
   accessToken: "",
   refreshToken: "",
+  language: "ID",
+  setLanguage: () => {},
   setLoading: () => {},
   setMessage: () => {},
   setStatus: () => {},
@@ -28,19 +36,25 @@ const LayoutProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
+  const [language, setLanguage] = useState("ID");
 
   const setAction = (callback) => {
     callback();
   };
 
   useEffect(() => {
-    const user = Cookies.get("user");
-    
-    if (user) {
-      setUser(JSON.parse(user));
-    };
+    const getSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
 
-    setAccessToken(Cookies.get("access_token"))
+      if (data.session) {
+        setUser(data);
+      }
+
+      if (error) {
+        alert(error);
+      }
+    };
+    getSession();
   }, []);
 
   return (
@@ -52,6 +66,8 @@ const LayoutProvider = ({ children }) => {
         status,
         accessToken,
         refreshToken,
+        language,
+        setLanguage,
         setLoading,
         setMessage,
         setStatus,
