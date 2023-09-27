@@ -1,6 +1,7 @@
 import Home from "../pages/Home"
 import Career from "../pages/Career"
 import Dashboard from "../pages/Dashboard"
+import AdminLogin from "../pages/AdminLogin"
 
 export const NonAuthRoutes = [
     {
@@ -8,8 +9,24 @@ export const NonAuthRoutes = [
         component: <Home />
     },
     {
+        path: "/markets",
+        component: <div>asd</div>
+    },
+    {
+        path: "/news",
+        component: <div>asd</div>
+    },
+    {
         path: "/career",
         component: <Career />
+    },
+    {
+        path: "/about",
+        component: <div>asd</div>
+    },
+    {
+        path: "/admin/login",
+        component: <AdminLogin />
     },
 ]
 
