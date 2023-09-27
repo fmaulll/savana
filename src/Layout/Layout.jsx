@@ -1,39 +1,61 @@
-import { FC, useContext } from "react";
+import { FC, Fragment, useContext, useEffect } from "react";
 import { LayoutContext } from "../context/LayoutContext";
 import ModalLoader from "../components/ModalLoader";
 import ModalSuccessFailed from "../components/ModalSuccessFailed";
 import { useState } from "react";
 import { BsPlus } from "react-icons/bs";
 import Header from "./Header";
-// import Sidebar from "./Sidebar";
+import Footer from "./Footer";
+import { useLocation, useNavigate } from "react-router-dom";
+import { createClient } from "@supabase/supabase-js";
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_KEY
+);
 
 const Layout = ({ children }) => {
-  const { loading, message, status, user, setMessage, setStatus } =
+  const { loading, message, status, user, setUser, setMessage, setStatus } =
     useContext(LayoutContext);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [openNewPost, setOpenNewPost] = useState(false);
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      alert(error);
+    }
+    setUser(null);
+    navigate("/admin/login");
+  };
+
   return (
-    <div className="bg-[#f0f0f0]">
+    <div className="bg-white">
       {user ? (
-        <div className="min-h-screen relative">
-          <Header />
-          <div className="flex">
-            {/* <Sidebar /> */}
-            <div className="w-full px-[300px] py-[30px] mt-32 z-0 ml-[300px]">
-              {children}
-            </div>
-          </div>
-          <div
-            onClick={() => setOpenNewPost(!openNewPost)}
-            className="fixed right-0 bottom-0 p-2 rounded-full bg-white mr-4 mb-4 cursor-pointer shadow-xl"
-          >
-            <BsPlus size={60} />
-          </div>
+        <div>
+          {children} <button onClick={handleLogout}>logout</button>
         </div>
       ) : (
-        <div className="min-h-screen items-center">
-          <Header />
-          {children}
-        </div>
+        <Fragment>
+          {pathname === "/" ? (
+            <Fragment>
+              <Header />
+              <div className="min-h-screen">{children}</div>
+              <Footer />
+            </Fragment>
+          ) : pathname === "/admin/login" ? (
+            <div className="min-h-screen">{children}</div>
+          ) : (
+            <Fragment>
+              <Header />
+              <div className="min-h-screen pt-[180px]">{children}</div>
+              <Footer />
+            </Fragment>
+          )}
+        </Fragment>
       )}
       {loading ? <ModalLoader /> : null}
       {message ? (
