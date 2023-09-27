@@ -12,6 +12,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.36.0",
     "autoprefixer": "^10.4.16",
+    "flowbite": "^1.8.1",
     "flowbite-react": "^0.6.0",
     "js-cookie": "^3.0.5",
     "postcss": "^8.4.30",
