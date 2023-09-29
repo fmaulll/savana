@@ -8,6 +8,8 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
+import AuthorizedHeader from "./Authorized/Header";
+import AuthorizedSidebar from "./Authorized/Sidebar";
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(
@@ -35,9 +37,13 @@ const Layout = ({ children }) => {
   return (
     <div className="bg-white">
       {user ? (
-        <div>
-          {children} <button onClick={handleLogout}>logout</button>
-        </div>
+        <Fragment>
+          <AuthorizedHeader />
+          <AuthorizedSidebar />
+          <div className="pt-[165px] pl-[270px]">
+            {children} <button onClick={handleLogout}>logout</button>
+          </div>
+        </Fragment>
       ) : (
         <Fragment>
           {pathname === "/" ? (
