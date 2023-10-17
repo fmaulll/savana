@@ -12,11 +12,13 @@ const AuthorizedSidebar = () => {
   };
   setInterval(UpdateTime);
   return (
-    <div className="bg-red-500 h-[calc(100vh-165px)] mt-[165px] fixed w-[270px]">
-      <div>{ctime}</div>
-      <div>
-        <FaCalendarAlt />
-        {useDate()}
+    <div className="bg-[#B0C6BB] h-[calc(100vh-165px)] mt-[165px] fixed w-[270px]">
+      <div className="bg-[#D9E3DE] px-9 my-2 py-4">
+        <div className="text-[32px] font-medium">{ctime}</div>
+        <div className="flex items-center font-medium pt-3">
+          <FaCalendarAlt className="mr-3" size={16} />
+          {useDate()}
+        </div>
       </div>
     </div>
   );
