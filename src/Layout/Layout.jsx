@@ -18,20 +18,31 @@ const supabase = createClient(
 );
 
 const Layout = ({ children }) => {
-  const { loading, message, status, user, setUser, setMessage, setStatus } =
+  const { loading, message, status, user, setUser, setMessage, setStatus, setLoading } =
     useContext(LayoutContext);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [openNewPost, setOpenNewPost] = useState(false);
 
   const handleLogout = async () => {
+    setLoading(true)
     const { error } = await supabase.auth.signOut();
 
     if (error) {
       alert(error);
+      setLoading(false)
+      return
     }
+    
     setUser(null);
     navigate("/admin/login");
+    setLoading(false)
+    setMessage("Logout Success");
+    setStatus(true);
+    setTimeout(() => {
+      setMessage("");
+      setStatus(false);
+    }, 1000) 
   };
 
   return (
