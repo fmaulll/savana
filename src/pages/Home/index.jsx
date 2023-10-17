@@ -4,6 +4,7 @@ import { LayoutContext } from "../../context/LayoutContext";
 import wording from "../../wording.json";
 import SavanaLogo from "../../assets/savanaBig.png";
 import { FaChevronRight } from "react-icons/fa";
+import Pabrik from "../../assets/factory.png";
 
 const initValue = [
   {
@@ -28,6 +29,13 @@ const initValue = [
   },
 ];
 
+const services = [
+  { label: "Industry", src: "" },
+  { label: "Plantation", src: "" },
+  { label: "Mining", src: "" },
+  { label: "Transportation", src: "" },
+];
+
 const Home = () => {
   const { language } = useContext(LayoutContext);
   const [images, setImages] = useState([...initValue]);
@@ -41,11 +49,7 @@ const Home = () => {
           rightControl=" "
         >
           {images.map((item, index) => (
-            <img
-              key={index}
-              alt={item.name}
-              src={item.src}
-            />
+            <img key={index} alt={item.name} src={item.src} />
           ))}
         </Carousel>
       </div>
@@ -76,6 +80,34 @@ const Home = () => {
           src={SavanaLogo}
           alt=""
         />
+      </div>
+      <div className="relative w-full px-[100px] mb-[116px]">
+        <img
+          className="w-full object-cover rounded-2xl"
+          src={Pabrik}
+          alt="Pabrik"
+        />
+        <h2 className="absolute bottom-[20px] absolute left-1/2 transform -translate-x-1/2 font-semibold text-2xl text-white">
+          Project Documentation
+        </h2>
+      </div>
+      <div className="px-[100px]">
+        <h1>Our Services</h1>
+        <h3>We serve multiple sectors in the execution of our business</h3>
+        <div className="flex justify-between items-center">
+          {services.map((item, index) => (
+            <div className="w-[224px] rounded-2xl shadow-2xl" key={index}>
+              <img
+                className="w-full object-cover rounded-t-2xl h-[253px]"
+                src={Pabrik}
+                alt="Pabrik"
+              />
+              <div className="py-4 flex justify-center items-center bg-white rounded-b-2xl">
+                {item.label}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
