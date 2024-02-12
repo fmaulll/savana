@@ -17,7 +17,7 @@ const Input = ({ placeholder, type, onChange }) => {
       <input
         className="border-none outline-none focus:outline-none focus:border-none bg-white text-sm"
         ref={inputRef}
-        type={show ? "text" : type}
+        type={show && type === "password" ? "text" : type}
         placeholder={placeholder}
         onChange={onChange}
       />
