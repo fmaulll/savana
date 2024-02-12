@@ -4,7 +4,18 @@ import { LuMenuSquare } from "react-icons/lu";
 import { useLocation } from "react-router-dom";
 
 const AuthorizedHeader = () => {
-    const { pathname } = useLocation()
+  const { pathname } = useLocation();
+  let pagename = "";
+
+  if (pathname === "/admin/dashboard") {
+    pagename = "Dashboard";
+  } else if (pathname === "/admin/pelayanan") {
+    pagename = "Pelayanan";
+  } else if (pathname === "/admin/karir") {
+    pagename = "Karir";
+  } else if (pathname === "/admin/about") {
+    pagename = "Abous Us";
+  }
   return (
     <div className="flex flex-col fixed w-full">
       <div className="flex justify-between items-center h-[105px] bg-[#E6EDE9] px-9">
@@ -15,7 +26,7 @@ const AuthorizedHeader = () => {
         <LuMenuSquare size={24} />
       </div>
       <div className="flex justify-center items-center h-[60px] bg-[#D9E3DE]">
-        {pathname}
+        {pagename}
       </div>
     </div>
   );
