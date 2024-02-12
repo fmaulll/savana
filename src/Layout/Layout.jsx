@@ -51,7 +51,7 @@ const Layout = ({ children }) => {
         <Fragment>
           <AuthorizedHeader />
           <AuthorizedSidebar />
-          <div className="pt-[165px] pl-[270px]">
+          <div className="pt-[195px] pl-[300px] px-9">
             {children} <button onClick={handleLogout}>logout</button>
           </div>
         </Fragment>
