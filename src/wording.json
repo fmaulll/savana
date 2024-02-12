@@ -1,8 +1,8 @@
 {
   "ID": {
     "nav": {
-      "markets": "Pasar",
-      "news": "Berita",
+      "markets": "Pelayanan",
+      "news": "Artikel",
       "career": "Karir",
       "about": "Tentang Kami"
     },
@@ -24,7 +24,7 @@
   },
   "EN": {
     "nav": {
-      "markets": "Markets",
+      "markets": "Services",
       "news": "News",
       "career": "Career",
       "about": "About Us"
