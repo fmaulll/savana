@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaCalendarAlt } from "react-icons/fa";
 import { FaMinusSquare } from "react-icons/fa";
 import { RiTeamFill } from "react-icons/ri";
@@ -15,6 +16,7 @@ const navigation = [
 ]
 
 const AuthorizedSidebar = () => {
+  const navigate = useNavigate();
   let time = new Date().toLocaleTimeString();
 
   const [ctime, setTime] = useState(time);
@@ -34,11 +36,11 @@ const AuthorizedSidebar = () => {
       </div>
       <div className="bg-[#D9E3DE] px-9 my-2 py-4 flex justify-between items-center">
         <span className="font-medium">Menu Navigasi</span>
-        <FaMinusSquare />
+        <FaMinusSquare size={24} />
       </div>
-      <div className="bg-[#D9E3DE] my-2 py-4">
+      <div className="bg-[#D9E3DE] my-2">
         {navigation.map((item, index) => (
-          <div key={index} className="flex items-center px-[30px] py-[24px] cursor-pointer hover:bg-gray-700">
+          <div onClick={() => navigate(item.path)} key={index} className="flex items-center px-[30px] py-[24px] cursor-pointer hover:bg-[#b4bfba]">
             {item.icon} 
             <span className="ml-[48px] font-medium">{item.label}</span>
           </div>
