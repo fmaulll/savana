@@ -30,7 +30,7 @@ const Header = () => {
   };
 
   const handleLanguage = () => {
-    setLanguage(language === "ID" ? "EN" : "ID")
+    setLanguage(language === "ID" ? "EN" : "ID");
   };
 
   // Add scroll event listener when the component mounts
@@ -62,11 +62,11 @@ const Header = () => {
 
   return (
     <div
-      className={`w-full pt-[25px] drop-shadow-lg fixed ${
+      className={`w-full py-[18px] drop-shadow-lg fixed ${
         !scrolling && window.location.pathname === "/" ? "" : "bg-white"
       } z-10`}
     >
-      <div className="flex justify-end px-[30px] md:px-[100px] hidden md:flex">
+      {/* <div className="flex justify-end px-[30px] md:px-[100px] hidden md:flex">
         <div className="py-3 px-6 rounded-full bg-[#DADADA] flex items-center relative group">
           <img className="mr-3" src={IndonesiaFlag} alt="Indonesian flag" />
           {language === "ID" ? "Indonesia" : "English"}
@@ -76,8 +76,8 @@ const Header = () => {
             {language === "ID" ? "English" : "Indonesia"}
           </div>
         </div>
-      </div>
-      <div className="w-full flex justify-between items-center px-[30px] h-[110px] md:px-[100px]">
+      </div> */}
+      <div className="w-full flex justify-between items-center px-[30px] md:px-[100px]">
         <img
           className="cursor-pointer"
           onClick={() => handleRouting("/")}
@@ -88,7 +88,15 @@ const Header = () => {
           {navigation.map((nav, index) => (
             <div
               onClick={() => handleRouting(nav.path)}
-              className={`ml-[50px] font-semibold ${handleActiveNav(nav.path) && "text-[#FFB66B]"} cursor-pointer text-xl ${!scrolling && window.location.pathname === "/" && "text-white"} ${scrolling && window.location.pathname === "/" && "text-[#004723]"}`}
+              className={`ml-[50px] font-semibold ${
+                handleActiveNav(nav.path) && "text-[#FFB66B]"
+              } cursor-pointer text-xl ${
+                !scrolling && window.location.pathname === "/" && "text-white"
+              } ${
+                scrolling &&
+                window.location.pathname === "/" &&
+                "text-[#004723]"
+              }`}
               to={nav.path}
               key={index}
             >
@@ -96,6 +104,8 @@ const Header = () => {
             </div>
           ))}
         </div>
+
+        <div className={`border-2 rounded-[24px] py-3 px-6 text-lg font-bold cursor-pointer ${!scrolling && window.location.pathname === "/" ? "bg-transparent border-white text-white" : "bg-white border-[#00391C] text-[#00391C]"}`}>Kontak Kami</div>
       </div>
     </div>
   );
