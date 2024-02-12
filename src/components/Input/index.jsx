@@ -1,7 +1,7 @@
 import React, { Fragment, useRef, useState } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 
-const Input = ({ placeholder, type, onChange }) => {
+const Input = ({ placeholder, type, onChange, className }) => {
   const inputRef = useRef(null);
   const [show, setShow] = useState(false);
 
@@ -12,10 +12,10 @@ const Input = ({ placeholder, type, onChange }) => {
   return (
     <div
       onClick={() => inputRef.current.focus()}
-      className="py-4 px-6 bg-white flex justify-between items-center rounded-lg w-[314px]"
+      className={`${className} py-2 px-3 bg-white flex justify-between items-center rounded-lg w-full border rounded-[4px] border-[#929292]`}
     >
       <input
-        className="border-none outline-none focus:outline-none focus:border-none bg-white text-sm"
+        className="border-none border-transparent focus:border-transparent focus:ring-0 bg-white text-sm w-full"
         ref={inputRef}
         type={show && type === "password" ? "text" : type}
         placeholder={placeholder}
