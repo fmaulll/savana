@@ -1,8 +1,60 @@
-import React from 'react'
+import { createClient } from '@supabase/supabase-js';
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import Button from '../../components/Button';
+import { LayoutContext } from '../../context/LayoutContext';
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_KEY
+);
 
 const Career = () => {
+  const navigate = useNavigate();
+  const { setLoading, setMessage, setStatus, setUser } =
+    useContext(LayoutContext);
+  const [careerData, setCareerData] = useState([]);
+
+  const getCareerData = async () => {
+    setLoading(true);
+    const { data, error } = await supabase.from("Career").select();
+    if (data && data.length > 0) {
+      setCareerData(data);
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+    setLoading(false);
+  };
+  
+  useEffect(() => {
+    getCareerData();
+  }, []);
   return (
-    <div>Career</div>
+    <div>
+      <p className='text-xl'>Tersedia <span className='font-bold'>{careerData.length} Job</span></p>
+      {careerData.map((item, index) => (
+        <div key={index} className='flex justify-between text-xl py-10 border-b'>
+          <span>{item.role}</span>
+          <div className='flex items-center'>
+            <div className='text-center mr-[72px]'>
+              <span className='font-extrabold text-[#BCBCBC]'>Tipe Pekerjaan</span><br/>
+              <span>{item.job_type}</span>
+            </div>
+            <div className='text-center mr-[72px]'>
+              <span className='font-extrabold text-[#BCBCBC]'>Sistem Kerja</span><br/>
+              <span>{item.working_arrangement}</span>
+            </div>
+            <Button type="gray" onClick={() => navigate(`/career/details/${item.id}`)}>Detail</Button>
+          </div>
+        </div>
+      ))}
+    </div>
   )
 }
 
