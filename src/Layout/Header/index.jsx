@@ -77,7 +77,7 @@ const Header = () => {
           </div>
         </div>
       </div> */}
-      <div className="w-full flex justify-between items-center px-[30px] md:px-[100px]">
+      <div className="w-full flex justify-between items-center px-[30px] md:px-[110px]">
         <img
           className="cursor-pointer"
           onClick={() => handleRouting("/")}
