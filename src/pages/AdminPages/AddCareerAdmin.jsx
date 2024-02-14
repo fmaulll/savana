@@ -4,6 +4,8 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { LayoutContext } from "../../context/LayoutContext";
 import { useNavigate } from "react-router-dom";
+import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css';
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -19,6 +21,7 @@ const initialValue = {
   working_arrangement: "",
   link: "",
   description: "",
+  requirement: "",
 };
 
 const AddCareerAdmin = () => {
@@ -26,6 +29,7 @@ const AddCareerAdmin = () => {
   const { setLoading, setMessage, setStatus, setUser } =
     useContext(LayoutContext);
   const [dataRequest, setDataRequest] = useState(initialValue);
+  const [value, setValue] = useState('');
 
   const handleChange = (key, value) => {
     setDataRequest((prev) => {
@@ -34,19 +38,19 @@ const AddCareerAdmin = () => {
         [key]: value,
       };
     });
-    // console.log(dataRequest);
+    console.log(dataRequest);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(dataRequest);
     if (
       !dataRequest.location ||
       !dataRequest.role ||
       !dataRequest.job_type ||
       !dataRequest.client ||
       !dataRequest.working_arrangement ||
-      !dataRequest.description
+      !dataRequest.description ||
+      !dataRequest.requirement
     ) {
       setLoading(false);
       setMessage("Make sure to fill all of the inputs!");
@@ -92,7 +96,7 @@ const AddCareerAdmin = () => {
               Active
             </label>
           </div>
-          <Button type="orange" className="w-min">
+          <Button type="orange">
             Publish
           </Button>
         </div>
@@ -133,11 +137,8 @@ const AddCareerAdmin = () => {
           placeholder="Link"
           onChange={(e) => handleChange("link", e.target.value)}
         />
-        <textarea
-          placeholder="Deskripsi Pekerjaan"
-          className="py-2 px-3 bg-white flex justify-between items-center rounded-lg w-full border rounded-[4px] border-[#929292] mt-4 bg-white text-sm h-[200px]"
-          onChange={(e) => handleChange("description", e.target.value)}
-        ></textarea>
+        <ReactQuill className="mt-4" placeholder="Deskripsi Pekerjaan" theme="snow" value={dataRequest.description} onChange={(e) => handleChange("description", e)} />
+        <ReactQuill className="mt-4" placeholder="Persyaratan Pekerjaan" theme="snow" value={dataRequest.requirement} onChange={(e) => handleChange("requirement", e)} />
       </form>
     </div>
   );
