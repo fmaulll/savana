@@ -16,9 +16,26 @@ const CareerAdmin = () => {
     useContext(LayoutContext);
   const [careerData, setCareerData] = useState([]);
 
-  const handleChangeCheckbox = async() => {
+  const handleChangeCheckbox = async (id, index) => {
+    setLoading(true);
+    const array = [];
+    careerData.map((item) => {
+      array.push({ ...item });
+    });
+    array[index].active = !array[index].active;
 
-  }
+    const { error } = await supabase.from('Career').update({ active: array[index].active}).eq('id', id)
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+
+    setCareerData(array);
+    setLoading(false);
+  };
 
   const getCareerData = async () => {
     setLoading(true);
@@ -42,10 +59,7 @@ const CareerAdmin = () => {
 
   return (
     <div className="flex flex-col">
-      <Button
-        onClick={() => navigate("/admin/karir/tambah")}
-        type="gray"
-      >
+      <Button onClick={() => navigate("/admin/karir/tambah")} type="gray">
         Tambah
       </Button>
       <table className="w-full border mt-6">
@@ -66,7 +80,14 @@ const CareerAdmin = () => {
             <tr key={index}>
               <td className="border py-2.5 text-center">{index + 1}</td>
               <td className="border py-2.5 text-center">
-                <input type="checkbox" checked={item.active} onChange={() => {}} />
+                <input
+                  type="checkbox"
+                  // value={item.active}
+                  checked={item.active}
+                  onChange={(e) =>
+                    handleChangeCheckbox(item.id, index)
+                  }
+                />
               </td>
               <td className="border py-2.5 text-center">{item.role}</td>
               <td className="border py-2.5 text-center">{item.location}</td>
