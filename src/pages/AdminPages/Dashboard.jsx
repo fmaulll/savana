@@ -1,7 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import { PiArrowCounterClockwiseLight, PiFilesFill } from "react-icons/pi";
+import { PiFilesFill } from "react-icons/pi";
+import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { LayoutContext } from "../../context/LayoutContext";
 
 const supabase = createClient(
@@ -21,17 +22,35 @@ const Dashboard = () => {
   const [cardData, setCardData] = useState(initData);
   const [homePhotos, setHomePhotos] = useState([]);
 
-  const getPhotosUrls = async (files) => {
-    const array = [];
-    files.map((item) => {
-      const { data } = supabase.storage.from("savana").getPublicUrl(item);
+  const handleChange = async (event) => {
+    setLoading(true);
 
-      array.push(data);
-    });
+    const file = event.target.files[0];
+    const { data, error } = await supabase.storage
+      .from("savana")
+      .upload("home/" + file.name, file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
 
-    setHomePhotos(array);
-    console.log(homePhotos);
+    if (data) {
+      getBucketData();
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+
     setLoading(false);
+  };
+
+  const getPhotosUrl = (path) => {
+    const { data } = supabase.storage.from("savana").getPublicUrl(path);
+
+    return data.publicUrl;
   };
 
   const getBucketData = async () => {
@@ -40,7 +59,7 @@ const Dashboard = () => {
     const { data, error } = await supabase.storage.from("savana").list("home", {
       limit: 100,
       offset: 0,
-      sortBy: { column: "name", order: "asc" },
+      sortBy: { column: "created_at", order: "asc" },
     });
 
     if (error) {
@@ -51,10 +70,16 @@ const Dashboard = () => {
     }
 
     data.map((item) => {
-      array.push("home/" + item.name);
+      array.push({
+        id: item.id,
+        url: getPhotosUrl("home/" + item.name),
+        name: item.name,
+      });
     });
 
-    getPhotosUrls(array);
+    setHomePhotos(array);
+    console.log(homePhotos);
+    setLoading(false);
   };
 
   const getCardData = async () => {
@@ -84,6 +109,12 @@ const Dashboard = () => {
     getBucketData();
   }, []);
 
+  let emptyPhotos = [];
+
+  for (let i = 0; i < 5 - homePhotos.length; i++) {
+    emptyPhotos.push("");
+  }
+
   return (
     <div>
       <div className="flex justify-around">
@@ -104,16 +135,37 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {homePhotos.map((item, index) => (
-        <img src={item.publicUrl} alt="" />
-      ))}
-
-      <label className="cursor-pointer" htmlFor="uploadPhotoHome">
-        <div className="h-[306px] w-full border border-[#929292] rounded flex justify-center items-center text-[#929292] border-dashed">
-          Dokumentasi Proyek
+      <div className="h-[306px] w-full border border-[#929292] flex justify-center items-center border-dashed">
+        <div className="grid grid-cols-5 w-full">
+          {homePhotos.map((item, index) => (
+            <div
+              className="border w-full h-[200px] flex justify-center cursor-pointer"
+              onClick={() => window.open(item.url)}
+            >
+              <img
+                className="object-fill h-full"
+                key={index}
+                src={item.url}
+                alt={item.name}
+              />
+            </div>
+          ))}
+          {emptyPhotos.map((item, index) => (
+            <label key={index} className="cursor-pointer" htmlFor="uploadPhotoHome">
+              <div className="border w-full h-[200px] flex justify-center items-center hover:bg-gray-300">
+                <MdOutlineAddPhotoAlternate size={48} />
+              </div>
+            </label>
+          ))}
         </div>
-      </label>
-      <input className="hidden" id="uploadPhotoHome" type="file" />
+      </div>
+      <input
+        className="hidden"
+        id="uploadPhotoHome"
+        type="file"
+        accept="image/*"
+        onChange={handleChange}
+      />
     </div>
   );
 };

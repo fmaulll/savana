@@ -1,10 +1,16 @@
 import { Carousel } from "flowbite-react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LayoutContext } from "../../context/LayoutContext";
 import wording from "../../wording.json";
 import SavanaLogo from "../../assets/savanaBig.png";
 import { FaChevronRight } from "react-icons/fa";
 import Pabrik from "../../assets/factory.png";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_KEY
+);
 
 const initValue = [
   {
@@ -37,8 +43,48 @@ const services = [
 ];
 
 const Home = () => {
-  const { language } = useContext(LayoutContext);
+  const { language, setLoading, setMessage, setStatus, setUser } =
+    useContext(LayoutContext);
   const [images, setImages] = useState([...initValue]);
+
+  const getPhotosUrl = (path) => {
+    const { data } = supabase.storage.from("savana").getPublicUrl(path);
+
+    return data.publicUrl;
+  };
+
+  const getBucketData = async () => {
+    setLoading(true);
+    const array = [];
+    const { data, error } = await supabase.storage.from("savana").list("home", {
+      limit: 100,
+      offset: 0,
+      sortBy: { column: "created_at", order: "asc" },
+    });
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+
+    data.map((item) => {
+      array.push({
+        id: item.id,
+        url: getPhotosUrl("home/" + item.name),
+        name: item.name,
+      });
+    });
+
+    setImages(array);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getBucketData();
+  }, []);
+
   return (
     <div>
       <div className="relative max-h-[800px]">
@@ -49,7 +95,7 @@ const Home = () => {
           rightControl=" "
         >
           {images.map((item, index) => (
-            <img key={index} alt={item.name} src={item.src} />
+            <img key={index} alt={item.name} src={item.url} />
           ))}
         </Carousel>
       </div>
