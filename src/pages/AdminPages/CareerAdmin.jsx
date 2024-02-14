@@ -12,7 +12,8 @@ const supabase = createClient(
 
 const CareerAdmin = () => {
   const navigate = useNavigate();
-  const { setLoading } = useContext(LayoutContext);
+  const { setLoading, setMessage, setStatus, setUser } =
+    useContext(LayoutContext);
   const [careerData, setCareerData] = useState([]);
 
   const handleChangeCheckbox = async() => {
@@ -27,10 +28,14 @@ const CareerAdmin = () => {
     }
 
     if (error) {
-      alert(error);
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
     }
     setLoading(false);
   };
+
   useEffect(() => {
     getCareerData();
   }, []);
@@ -39,7 +44,6 @@ const CareerAdmin = () => {
     <div className="flex flex-col">
       <Button
         onClick={() => navigate("/admin/karir/tambah")}
-        className="w-min"
         type="gray"
       >
         Tambah
