@@ -4,6 +4,7 @@ import Dashboard from "../pages/Dashboard"
 import AdminLogin from "../pages/AdminLogin"
 import CareerAdmin from "../pages/AdminPages/CareerAdmin";
 import AddCareerAdmin from "../pages/AdminPages/AddCareerAdmin";
+import Details from "../pages/Career/Details";
 
 export const NonAuthRoutes = [
     {
@@ -21,6 +22,10 @@ export const NonAuthRoutes = [
     {
         path: "/career",
         component: <Career />
+    },
+    {
+        path: "/career/details/:id",
+        component: <Details />
     },
     {
         path: "/about",
