@@ -68,7 +68,7 @@ const Layout = ({ children }) => {
           ) : (
             <Fragment>
               <Header />
-              <div className="min-h-screen pt-[180px] px-[110px]">{children}</div>
+              <div className="min-h-screen">{children}</div>
               <Footer />
             </Fragment>
           )}
