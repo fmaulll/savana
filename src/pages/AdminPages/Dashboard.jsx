@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { PiFilesFill } from "react-icons/pi";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
+import { BiEdit } from "react-icons/bi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LayoutContext } from "../../context/LayoutContext";
 
