@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { PiFilesFill } from "react-icons/pi";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
+import { FaRegTrashAlt } from "react-icons/fa";
 import { LayoutContext } from "../../context/LayoutContext";
 
 const supabase = createClient(
@@ -21,6 +22,25 @@ const Dashboard = () => {
     useContext(LayoutContext);
   const [cardData, setCardData] = useState(initData);
   const [homePhotos, setHomePhotos] = useState([]);
+
+  const handleClickDelete = async (file) => {
+    setLoading(true);
+    const { data, error } = await supabase.storage
+      .from("savana")
+      .remove(["home/" + file]);
+
+    if (data) {
+      getBucketData();
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+    setLoading(false);
+  };
 
   const handleChange = async (event) => {
     setLoading(true);
@@ -78,7 +98,6 @@ const Dashboard = () => {
     });
 
     setHomePhotos(array);
-    console.log(homePhotos);
     setLoading(false);
   };
 
@@ -138,20 +157,27 @@ const Dashboard = () => {
       <div className="h-[306px] w-full border border-[#929292] flex justify-center items-center border-dashed">
         <div className="grid grid-cols-5 w-full">
           {homePhotos.map((item, index) => (
-            <div
-              className="border w-full h-[200px] flex justify-center cursor-pointer"
-              onClick={() => window.open(item.url)}
-            >
+            <div key={index} className="relative border w-full h-[200px] flex justify-center ">
               <img
-                className="object-fill h-full"
-                key={index}
+                className="object-fill h-full cursor-pointer"
                 src={item.url}
                 alt={item.name}
+                onClick={() => window.open(item.url)}
               />
+              <div
+                className="absolute top-0 right-0 p-2 bg-red-500 rounded-full cursor-pointer"
+                onClick={() => handleClickDelete(item.name)}
+              >
+                <FaRegTrashAlt fill="white" />
+              </div>
             </div>
           ))}
           {emptyPhotos.map((item, index) => (
-            <label key={index} className="cursor-pointer" htmlFor="uploadPhotoHome">
+            <label
+              key={index}
+              className="cursor-pointer"
+              htmlFor="uploadPhotoHome"
+            >
               <div className="border w-full h-[200px] flex justify-center items-center hover:bg-gray-300">
                 <MdOutlineAddPhotoAlternate size={48} />
               </div>
