@@ -21,29 +21,7 @@ const Layout = ({ children }) => {
   const { loading, message, status, user, setUser, setMessage, setStatus, setLoading } =
     useContext(LayoutContext);
   const { pathname } = useLocation();
-  const navigate = useNavigate();
   const [openNewPost, setOpenNewPost] = useState(false);
-
-  const handleLogout = async () => {
-    setLoading(true)
-    const { error } = await supabase.auth.signOut();
-
-    if (error) {
-      alert(error);
-      setLoading(false)
-      return
-    }
-    
-    setUser(null);
-    navigate("/admin/login");
-    setLoading(false)
-    setMessage("Logout Success");
-    setStatus(true);
-    setTimeout(() => {
-      setMessage("");
-      setStatus(false);
-    }, 1000) 
-  };
 
   return (
     <div className="bg-white">
@@ -52,7 +30,7 @@ const Layout = ({ children }) => {
           <AuthorizedHeader />
           <AuthorizedSidebar />
           <div className="pt-[195px] pl-[300px] px-9">
-            {children} <button onClick={handleLogout}>logout</button>
+            {children} 
           </div>
         </Fragment>
       ) : (
