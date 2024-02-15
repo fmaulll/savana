@@ -23,6 +23,7 @@ const Dashboard = () => {
     useContext(LayoutContext);
   const [cardData, setCardData] = useState(initData);
   const [homePhotos, setHomePhotos] = useState([]);
+  const [clientData, setClientData] = useState([]);
 
   const handleClickDelete = async (file) => {
     setLoading(true);
@@ -158,7 +159,10 @@ const Dashboard = () => {
       <div className="h-[306px] w-full border border-[#929292] flex justify-center items-center border-dashed">
         <div className="grid grid-cols-5 w-full">
           {homePhotos.map((item, index) => (
-            <div key={index} className="relative border w-full h-[200px] flex justify-center ">
+            <div
+              key={index}
+              className="relative border w-full h-[200px] flex justify-center "
+            >
               <img
                 className="object-fill h-full cursor-pointer"
                 src={item.url}
@@ -185,6 +189,30 @@ const Dashboard = () => {
             </label>
           ))}
         </div>
+      </div>
+
+      <div>
+        <table className="w-full border mt-6">
+          <thead className="border bg-[#D9E3DE]">
+            <tr>
+              <th className="border py-2.5">No</th>
+              <th className="border py-2.5">Logo</th>
+              <th className="border py-2.5">Klien</th>
+              <th className="border py-2.5">Action</th>
+            </tr>
+          </thead>
+
+          <tbody className="border">
+            {clientData.map((item, index) => (
+              <tr key={index}>
+                <td className="border py-2.5 text-center">{index + 1}</td>
+                <td className="border py-2.5 text-center">{item.logo}</td>
+                <td className="border py-2.5 text-center">{item.name}</td>
+                <td className="border py-2.5 text-center">Delete</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <input
         className="hidden"
