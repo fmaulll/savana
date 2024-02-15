@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useContext } from "react";
 import SavanaLogo from "../../../assets/savanaLogo.png";
 import { LuMenuSquare } from "react-icons/lu";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { LayoutContext } from "../../../context/LayoutContext";
+import { createClient } from "@supabase/supabase-js";
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_KEY
+);
 
 const AuthorizedHeader = () => {
+  const {
+    loading,
+    message,
+    status,
+    user,
+    setUser,
+    setMessage,
+    setStatus,
+    setLoading,
+  } = useContext(LayoutContext);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   let pagename = "";
 
   if (pathname === "/admin/dashboard") {
@@ -16,14 +35,38 @@ const AuthorizedHeader = () => {
   } else if (pathname === "/admin/about") {
     pagename = "Abous Us";
   }
+
+  const handleLogout = async () => {
+    setLoading(true);
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      alert(error);
+      setLoading(false);
+      return;
+    }
+
+    setUser(null);
+    navigate("/admin/login");
+    setLoading(false);
+    setMessage("Logout Success");
+    setStatus(true);
+    setTimeout(() => {
+      setMessage("");
+      setStatus(false);
+    }, 1000);
+  };
+
   return (
     <div className="flex flex-col fixed w-full">
       <div className="flex justify-between items-center h-[105px] bg-[#E6EDE9] px-9">
         <div className="flex items-center">
           <img src={SavanaLogo} alt="Savana Logo" />
-          <h1 className="ml-4 text-xl font-semibold text-black">PT. SAVANA ANUGRAH LESTARI</h1>
+          <h1 className="ml-4 text-xl font-semibold text-black">
+            PT. SAVANA ANUGRAH LESTARI
+          </h1>
         </div>
-        <LuMenuSquare size={24} />
+        <LuMenuSquare onClick={handleLogout} size={24} />
       </div>
       <div className="flex justify-center items-center h-[60px] bg-[#D9E3DE]">
         {pagename}
