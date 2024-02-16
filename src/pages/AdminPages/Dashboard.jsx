@@ -5,8 +5,9 @@ import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { HiPlus } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LayoutContext } from "../../context/LayoutContext";
-import Button from "../../components/Button"
+import Button from "../../components/Button";
 import { supabase } from "../../hooks/supabase";
+import ModalNewKlien from "../../components/ModalNewKlien";
 
 const initData = {
   Proyek: 12,
@@ -20,6 +21,11 @@ const Dashboard = () => {
   const [cardData, setCardData] = useState(initData);
   const [homePhotos, setHomePhotos] = useState([]);
   const [clientData, setClientData] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleSubmitAddKlien = (data) => {
+    console.log(data)
+  }
 
   const handleClickDelete = async (file) => {
     setLoading(true);
@@ -186,10 +192,12 @@ const Dashboard = () => {
           ))}
         </div>
       </div>
-      
+
       <div className="flex justify-between items-center mt-6">
-            <span>Masukkan logo dan nama klien</span>
-            <Button type="gray" className="p-1.5"><HiPlus size={24} /></Button>
+        <span>Masukkan logo dan nama klien</span>
+        <Button type="gray" className="p-1.5" onClick={() => setOpenModal(!openModal)}>
+          <HiPlus size={24} />
+        </Button>
       </div>
 
       <div>
@@ -222,6 +230,7 @@ const Dashboard = () => {
         accept="image/*"
         onChange={handleChange}
       />
+      {openModal && <ModalNewKlien onSubmit={handleSubmitAddKlien} onClose={() => setOpenModal(!openModal)} />}
     </div>
   );
 };
