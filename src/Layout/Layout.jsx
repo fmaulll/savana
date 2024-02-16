@@ -7,15 +7,8 @@ import { BsPlus } from "react-icons/bs";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useLocation, useNavigate } from "react-router-dom";
-import { createClient } from "@supabase/supabase-js";
 import AuthorizedHeader from "./Authorized/Header";
 import AuthorizedSidebar from "./Authorized/Sidebar";
-
-// Create a single supabase client for interacting with your database
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_KEY
-);
 
 const Layout = ({ children }) => {
   const { loading, message, status, user, setUser, setMessage, setStatus, setLoading } =

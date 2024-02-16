@@ -5,12 +5,7 @@ import wording from "../../wording.json";
 import SavanaLogo from "../../assets/savanaBig.png";
 import { FaChevronRight } from "react-icons/fa";
 import Pabrik from "../../assets/factory.png";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_KEY
-);
+import { supabase } from "../../hooks/supabase";
 
 const initValue = [
   {
