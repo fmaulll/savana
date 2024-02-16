@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { LayoutContext } from "../../context/LayoutContext";
 import Button from "../../components/Button";
+import { BiEdit } from "react-icons/bi";
+import { HiOutlineTrash } from "react-icons/hi";
 
 // Create a single supabase client for interacting with your database
 const supabase = createClient(
@@ -93,7 +95,7 @@ const CareerAdmin = () => {
               <td className="border py-2.5 text-center">{item.location}</td>
               <td className="border py-2.5 text-center">{item.job_type}</td>
               <td className="border py-2.5 text-center">{item.client}</td>
-              <td className="border py-2.5 text-center">Edit Delete</td>
+              <td className="border py-2.5 text-center flex items-center"><BiEdit size={30} /> <HiOutlineTrash size={30} /></td>
             </tr>
           ))}
         </tbody>
