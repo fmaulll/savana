@@ -1,16 +1,11 @@
 import React, { useContext, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { LayoutContext } from "../../context/LayoutContext";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_KEY
-);
+import { supabase } from "../../hooks/supabase";
 
 const initialValue = {
   active: false,

@@ -3,13 +3,7 @@ import SavanaLogo from "../../../assets/savanaLogo.png";
 import { LuMenuSquare } from "react-icons/lu";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LayoutContext } from "../../../context/LayoutContext";
-import { createClient } from "@supabase/supabase-js";
-
-// Create a single supabase client for interacting with your database
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_KEY
-);
+import { supabase } from "../../../hooks/supabase";
 
 const AuthorizedHeader = () => {
   const {

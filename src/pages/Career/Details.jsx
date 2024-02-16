@@ -1,14 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Button from "../../components/Button";
 import { LayoutContext } from "../../context/LayoutContext";
-
-// Create a single supabase client for interacting with your database
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_KEY
-);
+import { supabase } from "../../hooks/supabase";
 
 const Details = () => {
   const { id } = useParams();

@@ -1,16 +1,10 @@
-import { createClient } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { LayoutContext } from "../../context/LayoutContext";
 import Button from "../../components/Button";
 import { BiEdit } from "react-icons/bi";
 import { HiOutlineTrash } from "react-icons/hi";
-
-// Create a single supabase client for interacting with your database
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_KEY
-);
+import { supabase } from "../../hooks/supabase";
 
 const CareerAdmin = () => {
   const navigate = useNavigate();

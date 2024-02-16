@@ -1,4 +1,3 @@
-import { createClient } from "@supabase/supabase-js";
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { PiFilesFill } from "react-icons/pi";
@@ -7,11 +6,7 @@ import { HiPlus } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LayoutContext } from "../../context/LayoutContext";
 import Button from "../../components/Button"
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_KEY
-);
+import { supabase } from "../../hooks/supabase";
 
 const initData = {
   Proyek: 12,

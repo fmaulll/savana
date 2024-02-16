@@ -2,17 +2,10 @@ import React, { useContext, useState } from "react";
 import SavanaLogo from "../../assets/savanaBig.png";
 import Background from "../../assets/Background.png";
 import Input from "../../components/Input";
-
-import { createClient } from "@supabase/supabase-js";
 import Button from "../../components/Button";
 import { LayoutContext } from "../../context/LayoutContext";
 import { useNavigate } from "react-router-dom";
-
-// Create a single supabase client for interacting with your database
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_KEY
-);
+import { supabase } from "../../hooks/supabase";
 
 const AdminLogin = () => {
   const { setLoading, setMessage, setStatus, setUser } =
