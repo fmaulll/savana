@@ -3,9 +3,10 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { PiFilesFill } from "react-icons/pi";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-import { BiEdit } from "react-icons/bi";
+import { HiPlus } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { LayoutContext } from "../../context/LayoutContext";
+import Button from "../../components/Button"
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -156,7 +157,7 @@ const Dashboard = () => {
         ))}
       </div>
 
-      <div className="h-[306px] w-full border border-[#929292] flex justify-center items-center border-dashed">
+      <div className="mt-8 h-[306px] w-full border border-[#929292] flex justify-center items-center border-dashed">
         <div className="grid grid-cols-5 w-full">
           {homePhotos.map((item, index) => (
             <div
@@ -189,6 +190,11 @@ const Dashboard = () => {
             </label>
           ))}
         </div>
+      </div>
+      
+      <div className="flex justify-between items-center mt-6">
+            <span>Masukkan logo dan nama klien</span>
+            <Button type="gray" className="p-1.5"><HiPlus size={24} /></Button>
       </div>
 
       <div>
