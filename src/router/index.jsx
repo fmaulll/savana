@@ -49,7 +49,7 @@ export const AuthRoutes = [
         component: <CareerAdmin />,
     },
     {
-        path: "/admin/karir/tambah",
+        path: "/admin/karir/:type/:id",
         component: <AddCareerAdmin />,
     },
 ]
