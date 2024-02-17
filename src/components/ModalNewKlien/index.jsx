@@ -27,7 +27,8 @@ const ModalNewKlien = ({ onClose, onSubmit }) => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (!dataRequest.name || !dataRequest.file) {
       return;
     }
@@ -89,7 +90,7 @@ const ModalNewKlien = ({ onClose, onSubmit }) => {
               onChange={(e) => handleChange("name", e.target.value)}
             />
           </div>
-          <Button className="w-full py-4 mt-2.5">Add</Button>
+          <Button disabled={!dataRequest.name || !dataRequest.file} className="w-full py-4 mt-2.5">Add</Button>
         </form>
       </OutsideWrapper>
     </div>
