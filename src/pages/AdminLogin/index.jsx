@@ -82,7 +82,7 @@ const AdminLogin = () => {
             type="password"
             onChange={(e) => handleChange("password", e.target.value)}
           />
-          <Button>Submit</Button>
+          <Button type="gray" className="w-full py-4">Submit</Button>
         </form>
       </div>
       <div className="h-[97px] bg-[#002B15] flex justify-center items-end px-[70px]">
