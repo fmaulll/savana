@@ -4,9 +4,11 @@ import { PiFilesFill } from "react-icons/pi";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { HiPlus } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { BiEdit } from "react-icons/bi";
 import { LayoutContext } from "../../context/LayoutContext";
-import Button from "../../components/Button"
+import Button from "../../components/Button";
 import { supabase } from "../../hooks/supabase";
+import ModalNewKlien from "../../components/ModalNewKlien";
 
 const initData = {
   Proyek: 12,
@@ -20,6 +22,89 @@ const Dashboard = () => {
   const [cardData, setCardData] = useState(initData);
   const [homePhotos, setHomePhotos] = useState([]);
   const [clientData, setClientData] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleDeleteKlien = async (id) => {
+    setLoading(true);
+    const { error } = await supabase.from("client").delete().eq("id", id);
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+
+    setLoading(false);
+    setMessage("Klien Deleted!");
+    setStatus(true);
+    setTimeout(() => {
+      setMessage("");
+      getKlien();
+      return;
+    }, 2000);
+  };
+
+  const getKlien = async () => {
+    setLoading(true);
+    const array = [];
+    const { data, error } = await supabase.from("client").select();
+    if (data && data.length > 0) {
+      setClientData(array.concat(data));
+      console.log(data);
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+    setLoading(false);
+  };
+
+  const addKlien = async (data) => {
+    const { error } = await supabase.from("client").insert(data);
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+
+    setLoading(false);
+    setMessage("Client Added!");
+    setStatus(true);
+    setTimeout(() => {
+      setMessage("");
+      getKlien();
+    }, 2000);
+  };
+
+  const handleSubmitAddKlien = async (dataKlien) => {
+    setLoading(true);
+    let dataRequest = { name: dataKlien.name, image_url: "", file_name: dataKlien.file.name };
+
+    const { data, error } = await supabase.storage
+      .from("savana")
+      .upload("client/" + dataKlien.file.name, dataKlien.file, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    if (data) {
+      dataRequest = { ...dataRequest, image_url: getPhotosUrl(data.path) };
+      addKlien(dataRequest);
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+  };
 
   const handleClickDelete = async (file) => {
     setLoading(true);
@@ -124,6 +209,7 @@ const Dashboard = () => {
   useEffect(() => {
     getCardData();
     getBucketData();
+    getKlien();
   }, []);
 
   let emptyPhotos = [];
@@ -152,44 +238,55 @@ const Dashboard = () => {
         ))}
       </div>
 
-      <div className="mt-8 h-[306px] w-full border border-[#929292] flex justify-center items-center border-dashed">
-        <div className="grid grid-cols-5 w-full">
-          {homePhotos.map((item, index) => (
-            <div
-              key={index}
-              className="relative border w-full h-[200px] flex justify-center "
-            >
-              <img
-                className="object-fill h-full cursor-pointer"
-                src={item.url}
-                alt={item.name}
-                onClick={() => window.open(item.url)}
-              />
+      <div className="w-full mt-8">
+        <span className="font-medium">
+          Masukan maksimal 5 photo untuk ditampilkan pada halaman Home
+        </span>
+        <div className="mt-4 h-[306px] w-full border border-[#929292] flex justify-center items-center border-dashed">
+          <div className="grid grid-cols-5 w-full">
+            {homePhotos.map((item, index) => (
               <div
-                className="absolute top-0 right-0 p-2 bg-red-500 rounded-full cursor-pointer"
-                onClick={() => handleClickDelete(item.name)}
+                key={index}
+                className="relative border w-full h-[200px] flex justify-center "
               >
-                <FaRegTrashAlt fill="white" />
+                <img
+                  className="object-fill h-full cursor-pointer"
+                  src={item.url}
+                  alt={item.name}
+                  onClick={() => window.open(item.url)}
+                />
+                <div
+                  className="absolute top-0 right-0 p-2 bg-red-500 rounded-full cursor-pointer"
+                  onClick={() => handleClickDelete(item.name)}
+                >
+                  <FaRegTrashAlt fill="white" />
+                </div>
               </div>
-            </div>
-          ))}
-          {emptyPhotos.map((item, index) => (
-            <label
-              key={index}
-              className="cursor-pointer"
-              htmlFor="uploadPhotoHome"
-            >
-              <div className="border w-full h-[200px] flex justify-center items-center hover:bg-gray-300">
-                <MdOutlineAddPhotoAlternate size={48} />
-              </div>
-            </label>
-          ))}
+            ))}
+            {emptyPhotos.map((item, index) => (
+              <label
+                key={index}
+                className="cursor-pointer"
+                htmlFor="uploadPhotoHome"
+              >
+                <div className="border w-full h-[200px] flex justify-center items-center hover:bg-gray-300">
+                  <MdOutlineAddPhotoAlternate size={48} />
+                </div>
+              </label>
+            ))}
+          </div>
         </div>
       </div>
-      
+
       <div className="flex justify-between items-center mt-6">
-            <span>Masukkan logo dan nama klien</span>
-            <Button type="gray" className="p-1.5"><HiPlus size={24} /></Button>
+        <span className="font-medium">Masukkan logo dan nama klien</span>
+        <Button
+          type="gray"
+          className="p-1.5"
+          onClick={() => setOpenModal(!openModal)}
+        >
+          <HiPlus size={24} />
+        </Button>
       </div>
 
       <div>
@@ -207,9 +304,25 @@ const Dashboard = () => {
             {clientData.map((item, index) => (
               <tr key={index}>
                 <td className="border py-2.5 text-center">{index + 1}</td>
-                <td className="border py-2.5 text-center">{item.logo}</td>
+                <td className="border py-2.5 text-center flex justify-center">
+                  <img
+                    onClick={() => window.open(item.image_url)}
+                    className="h-[100px] cursor-pointer"
+                    src={item.image_url}
+                    alt={item.name}
+                  />
+                </td>
                 <td className="border py-2.5 text-center">{item.name}</td>
-                <td className="border py-2.5 text-center">Delete</td>
+                <td className="border py-2.5 text-center">
+                  <div className="flex w-full h-full justify-center items-center">
+                    <BiEdit
+                      className="cursor-pointer mr-2"
+                      onClick={() => navigate(`/admin/karir/edit/${item.id}`)}
+                      size={30}
+                    />
+                    <FaRegTrashAlt fill="red" size={24} className="cursor-pointer" onClick={() => handleDeleteKlien(item.id)} />
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -222,6 +335,12 @@ const Dashboard = () => {
         accept="image/*"
         onChange={handleChange}
       />
+      {openModal && (
+        <ModalNewKlien
+          onSubmit={handleSubmitAddKlien}
+          onClose={() => setOpenModal(!openModal)}
+        />
+      )}
     </div>
   );
 };

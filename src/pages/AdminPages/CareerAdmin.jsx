@@ -12,6 +12,26 @@ const CareerAdmin = () => {
     useContext(LayoutContext);
   const [careerData, setCareerData] = useState([]);
 
+  const handleDelete = async (id) => {
+    const { error } = await supabase.from("Career").delete().eq("id", id);
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+
+    setLoading(false);
+    setMessage("Job Deleted!");
+    setStatus(true);
+    setTimeout(() => {
+      setMessage("");
+      getCareerData();
+      return;
+    }, 2000);
+  };
+
   const handleChangeCheckbox = async (id, index) => {
     setLoading(true);
     const array = [];
@@ -20,7 +40,10 @@ const CareerAdmin = () => {
     });
     array[index].active = !array[index].active;
 
-    const { error } = await supabase.from('Career').update({ active: array[index].active}).eq('id', id)
+    const { error } = await supabase
+      .from("Career")
+      .update({ active: array[index].active })
+      .eq("id", id);
 
     if (error) {
       setLoading(false);
@@ -35,9 +58,10 @@ const CareerAdmin = () => {
 
   const getCareerData = async () => {
     setLoading(true);
+    const array = [];
     const { data, error } = await supabase.from("Career").select();
     if (data && data.length > 0) {
-      setCareerData(data);
+      setCareerData(array.concat(data));
     }
 
     if (error) {
@@ -55,7 +79,7 @@ const CareerAdmin = () => {
 
   return (
     <div className="flex flex-col">
-      <Button onClick={() => navigate("/admin/karir/tambah")} type="gray">
+      <Button onClick={() => navigate("/admin/karir/tambah/new")} type="gray">
         Tambah
       </Button>
       <table className="w-full border mt-6">
@@ -80,16 +104,26 @@ const CareerAdmin = () => {
                   type="checkbox"
                   // value={item.active}
                   checked={item.active}
-                  onChange={(e) =>
-                    handleChangeCheckbox(item.id, index)
-                  }
+                  onChange={(e) => handleChangeCheckbox(item.id, index)}
                 />
               </td>
               <td className="border py-2.5 text-center">{item.role}</td>
               <td className="border py-2.5 text-center">{item.location}</td>
               <td className="border py-2.5 text-center">{item.job_type}</td>
               <td className="border py-2.5 text-center">{item.client}</td>
-              <td className="border py-2.5 text-center flex items-center"><BiEdit size={30} /> <HiOutlineTrash size={30} /></td>
+              <td className="border py-2.5 text-center flex items-center justify-between px-2">
+                <BiEdit
+                  className="cursor-pointer"
+                  onClick={() => navigate(`/admin/karir/edit/${item.id}`)}
+                  size={30}
+                />{" "}
+                <HiOutlineTrash
+                  className="cursor-pointer"
+                  onClick={() => handleDelete(item.id)}
+                  fill="red"
+                  size={30}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
