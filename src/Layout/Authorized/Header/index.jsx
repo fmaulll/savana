@@ -20,13 +20,13 @@ const AuthorizedHeader = () => {
   const navigate = useNavigate();
   let pagename = "";
 
-  if (pathname === "/admin/dashboard") {
+  if (pathname.includes("/admin/dashboard")) {
     pagename = "Dashboard";
-  } else if (pathname === "/admin/pelayanan") {
+  } else if (pathname.includes("/admin/pelayanan")) {
     pagename = "Pelayanan";
-  } else if (pathname === "/admin/karir") {
+  } else if (pathname.includes("/admin/karir")) {
     pagename = "Karir";
-  } else if (pathname === "/admin/about") {
+  } else if (pathname.includes("/admin/about")) {
     pagename = "Abous Us";
   }
 

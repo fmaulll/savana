@@ -5,6 +5,9 @@ import AdminLogin from "../pages/AdminLogin"
 import CareerAdmin from "../pages/AdminPages/CareerAdmin";
 import AddCareerAdmin from "../pages/AdminPages/AddCareerAdmin";
 import Details from "../pages/Career/Details";
+import Service from "../pages/AdminPages/Service";
+import DetailService from "../pages/AdminPages/DetailService";
+import AddEditProject from "../pages/AdminPages/AddEditProject";
 
 export const NonAuthRoutes = [
     {
@@ -51,5 +54,17 @@ export const AuthRoutes = [
     {
         path: "/admin/karir/:type/:id",
         component: <AddCareerAdmin />,
+    },
+    {
+        path: "/admin/pelayanan",
+        component: <Service />,
+    },
+    {
+        path: "/admin/pelayanan/:id",
+        component: <DetailService />,
+    },
+    {
+        path: "/admin/pelayanan/:type/:service_id/:id",
+        component: <AddEditProject />,
     },
 ]
