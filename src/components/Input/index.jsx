@@ -12,7 +12,7 @@ const Input = ({ placeholder, type, onChange, className, ...other }) => {
   return (
     <div
       onClick={() => inputRef.current.focus()}
-      className={`${className} py-2 px-3 bg-white flex justify-between items-center rounded-lg w-full border rounded-[4px] border-[#929292]`}
+      className={`${className} py-2 px-3 bg-white flex justify-between items-center rounded w-full border rounded-[4px] border-[#929292]`}
     >
       <input
         {...other}

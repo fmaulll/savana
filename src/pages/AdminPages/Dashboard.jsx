@@ -88,7 +88,7 @@ const Dashboard = () => {
 
     const { data, error } = await supabase.storage
       .from("savana")
-      .upload("client/" + dataKlien.file.name, dataKlien.file, {
+      .upload("client/" + dataKlien.file.name + Date.now(), dataKlien.file, {
         cacheControl: "3600",
         upsert: false,
       });
@@ -131,7 +131,7 @@ const Dashboard = () => {
     const file = event.target.files[0];
     const { data, error } = await supabase.storage
       .from("savana")
-      .upload("home/" + file.name, file, {
+      .upload("home/" + file.name + Date.now(), file, {
         cacheControl: "3600",
         upsert: false,
       });

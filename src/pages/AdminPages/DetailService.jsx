@@ -5,6 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/Button";
 import { LayoutContext } from "../../context/LayoutContext";
 import { supabase } from "../../hooks/supabase";
+import { BiEdit } from "react-icons/bi";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const DetailService = () => {
   const { id } = useParams();
@@ -13,6 +15,24 @@ const DetailService = () => {
     useContext(LayoutContext);
   const [serviceDetail, setServiceDetail] = useState(null);
   const [projects, setProjects] = useState([]);
+
+  const getProjects = async() => {
+    const { data, error } = await supabase
+      .from("projects")
+      .select()
+      .eq("service_id", id)
+    if (data) {
+      setProjects(data);
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+    setLoading(false);
+  }
 
   const getServiceDetail = async () => {
     setLoading(true);
@@ -36,6 +56,7 @@ const DetailService = () => {
 
   useEffect(() => {
     getServiceDetail();
+    getProjects();  
   }, []);
   return (
     <Fragment>
