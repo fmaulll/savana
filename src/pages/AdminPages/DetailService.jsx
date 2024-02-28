@@ -63,7 +63,7 @@ const DetailService = () => {
     <Fragment>
       {!serviceDetail || !serviceDetail.name  ? "" : <div className="w-full font-bold text-2xl">{serviceDetail.name}</div>}
       <div className="mt-4">
-        <Button type="gray" onClick={() => navigate(`/admin/pelayanan/description/${id}`)}>Edit</Button>
+        <Button type="gray" onClick={() => navigate(`/admin/pelayanan/description/service/${id}`)}>Edit</Button>
         {!serviceDetail || !serviceDetail.description ? (
           <div className="text-center mt-3">No description</div>
         ) : (
