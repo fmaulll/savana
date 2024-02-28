@@ -17,6 +17,7 @@ const DetailService = () => {
   const [projects, setProjects] = useState([]);
 
   const getProjects = async() => {
+    setLoading(true);
     const { data, error } = await supabase
       .from("projects")
       .select()
@@ -60,9 +61,10 @@ const DetailService = () => {
   }, []);
   return (
     <Fragment>
-      <div>
-        <Button type="gray">Edit</Button>
-        {!serviceDetail ? (
+      {!serviceDetail || !serviceDetail.name  ? "" : <div className="w-full font-bold text-2xl">{serviceDetail.name}</div>}
+      <div className="mt-4">
+        <Button type="gray" onClick={() => navigate(`/admin/pelayanan/description/${id}`)}>Edit</Button>
+        {!serviceDetail || !serviceDetail.description ? (
           <div className="text-center mt-3">No description</div>
         ) : (
           <div
@@ -114,7 +116,7 @@ const DetailService = () => {
                   <div className="flex w-full h-full justify-center items-center">
                     <BiEdit
                       className="cursor-pointer mr-2"
-                      onClick={() => navigate(`/admin/karir/edit/${item.id}`)}
+                      onClick={() => navigate(`/admin/pelayanan/edit/${id}/${item.id}`)}
                       size={30}
                     />
                     <FaRegTrashAlt

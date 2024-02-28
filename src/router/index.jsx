@@ -8,6 +8,8 @@ import Details from "../pages/Career/Details";
 import Service from "../pages/AdminPages/Service";
 import DetailService from "../pages/AdminPages/DetailService";
 import AddEditProject from "../pages/AdminPages/AddEditProject";
+import EditServiceDescription from "../pages/AdminPages/EditServiceDescription";
+import AboutUs from "../pages/AdminPages/AboutUs";
 
 export const NonAuthRoutes = [
     {
@@ -66,5 +68,13 @@ export const AuthRoutes = [
     {
         path: "/admin/pelayanan/:type/:service_id/:id",
         component: <AddEditProject />,
+    },
+    {
+        path: "/admin/pelayanan/description/:id",
+        component: <EditServiceDescription />,
+    },
+    {
+        path: "/admin/about",
+        component: <AboutUs />,
     },
 ]
