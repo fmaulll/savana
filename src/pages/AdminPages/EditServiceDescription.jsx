@@ -8,7 +8,7 @@ import { supabase } from "../../hooks/supabase";
 const EditServiceDescription = () => {
   const { setLoading, setMessage, setStatus, setUser } =
     useContext(LayoutContext);
-  const { id } = useParams();
+  const { type, id } = useParams();
   const navigate = useNavigate();
   const [description, setDescription] = useState("");
   const [serviceDetail, setServiceDetail] = useState({ name: "" });
@@ -78,10 +78,10 @@ const EditServiceDescription = () => {
   }, []);
   return (
     <form onSubmit={handleSubmit}>
-      {!serviceDetail || !serviceDetail.name ? (
+      {!serviceDetail || (!serviceDetail.name) ? (
         ""
       ) : (
-        <div className="w-full font-bold text-2xl">{serviceDetail.name}</div>
+        <div className="w-full font-bold text-2xl">{type !== "about" && serviceDetail.name}</div>
       )}
       <div className="flex justify-end mt-4">
         <Button type="orange">Publish</Button>
