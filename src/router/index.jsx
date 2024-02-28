@@ -70,7 +70,7 @@ export const AuthRoutes = [
         component: <AddEditProject />,
     },
     {
-        path: "/admin/pelayanan/description/:id",
+        path: "/admin/pelayanan/description/:type/:id",
         component: <EditServiceDescription />,
     },
     {

@@ -17,7 +17,8 @@ const Service = () => {
     const { data, error } = await supabase
       .from("services")
       .select()
-      .order("created_at");
+      .order("created_at")
+      .neq('name', 'About Us');
     if (data && data.length > 0) {
       setServices(array.concat(data));
     }
