@@ -52,7 +52,7 @@ const AuthorizedHeader = () => {
   };
 
   return (
-    <div className="flex flex-col fixed w-full">
+    <div className="flex flex-col fixed w-full z-10">
       <div className="flex justify-between items-center h-[105px] bg-[#E6EDE9] px-9">
         <div className="flex items-center">
           <img src={SavanaLogo} alt="Savana Logo" />
