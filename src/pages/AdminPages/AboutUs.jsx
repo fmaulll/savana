@@ -167,7 +167,7 @@ const AboutUs = () => {
         <Button
           type="gray"
           onClick={() =>
-            navigate(`/admin/pelayanan/description/about/${aboutData.id}`)
+            navigate(`/admin/about/${aboutData.id}`)
           }
         >
           Edit
