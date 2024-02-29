@@ -10,6 +10,7 @@ import DetailService from "../pages/AdminPages/DetailService";
 import AddEditProject from "../pages/AdminPages/AddEditProject";
 import EditServiceDescription from "../pages/AdminPages/EditServiceDescription";
 import AboutUs from "../pages/AdminPages/AboutUs";
+import AboutUsDetail from "../pages/AdminPages/AboutUsDetail";
 
 export const NonAuthRoutes = [
     {
@@ -76,5 +77,9 @@ export const AuthRoutes = [
     {
         path: "/admin/about",
         component: <AboutUs />,
+    },
+    {
+        path: "/admin/about/:id",
+        component: <AboutUsDetail />,
     },
 ]
