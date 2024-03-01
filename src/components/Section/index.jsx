@@ -34,7 +34,7 @@ const Section = ({data, index, number, handleChange, handleDeleteExistingDocumen
                 />
                 <div
                   className="absolute top-0 right-0 p-2 bg-red-500 rounded-full cursor-pointer"
-                  onClick={() => handleDeleteExistingDocumentation(idx, id)}
+                  onClick={() => handleDeleteExistingDocumentation(index, idx, data.id, doc.name)}
                 >
                   <FaRegTrashAlt fill="white" />
                 </div>
@@ -48,7 +48,7 @@ const Section = ({data, index, number, handleChange, handleDeleteExistingDocumen
                 <span>{doc.name}</span>
                 <div
                   className="absolute top-0 right-0 p-2 bg-red-500 rounded-full cursor-pointer"
-                  onClick={() => handleClickDelete(idx)}
+                  onClick={() => handleClickDelete(index, idx)}
                 >
                   <FaRegTrashAlt fill="white" />
                 </div>
