@@ -43,6 +43,72 @@ const AboutUsDetail = () => {
   const [sections, setSections] = useState([]);
   const [deletedSections, setDeletedSections] = useState([]);
 
+  const getDocumentation = async (sectionId) => {
+    setLoading(true);
+    const array = [];
+    const { data, error } = await supabase.storage
+      .from("savana")
+      .list(`section-${sectionId}`, {
+        limit: 100,
+        offset: 0,
+        sortBy: { column: "created_at", order: "asc" },
+      });
+
+    if (data.length > 0) {
+      console.log(data);
+      data.map((item) => {
+        array.push({
+          id: item.id,
+          url: getPhotosUrl(`section-${sectionId}/` + item.name),
+          name: item.name,
+        });
+      });
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+    }
+
+    setLoading(false);
+    return array;
+  };
+
+  const getSections = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("sections")
+      .select()
+      .eq("service_id", id)
+      .order("created_at");
+
+    if (data && Array.isArray(data)) {
+      // Check if data is an array
+      const array = await Promise.all(
+        data.map(async (item) => {
+          console.log(item);
+          const doc = await getDocumentation(item.id); // Await the promise
+          return {
+            ...item,
+            dataDocumentation: doc,
+            documentation: [],
+            deletedDocumentation: [],
+          };
+        })
+      );
+
+      setSections(array); // Update state with the array
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+    }
+    setLoading(false);
+  };
+
   const handleChangeDetail = (key, value) => {
     setAboutDetail((prev) => {
       return { ...prev, [key]: value };
@@ -67,8 +133,8 @@ const AboutUsDetail = () => {
 
   const deleteImage = async (images) => {
     const { data, error } = await supabase.storage
-      .from("avatars")
-      .remove(["folder/avatar1.png"]);
+      .from("savana")
+      .remove(images);
 
     if (error) {
       setLoading(false);
@@ -129,14 +195,16 @@ const AboutUsDetail = () => {
       const { data, error } = await supabase
         .from("sections")
         .update(dataRequest)
-        .eq("section_id", givenData.service_id)
+        .eq("id", givenData.id)
         .select();
 
       if (data) {
         givenData.documentation.map((item) => {
-          uploadImage(item, data.id);
+          uploadImage(item, givenData.id);
         });
-        deleteImage(givenData.deletedDocumentation);
+        if (givenData.deletedDocumentation.length > 0) {
+          deleteImage(givenData.deletedDocumentation);
+        }
       }
 
       if (error) {
@@ -174,9 +242,26 @@ const AboutUsDetail = () => {
     return {};
   };
 
-  const handleDeleteExistingDocumentation = () => {};
+  const handleDeleteExistingDocumentation = (
+    indexRow,
+    indexImage,
+    sectionId,
+    filename
+  ) => {
+    const array = [...sections];
+    array[indexRow].dataDocumentation.splice(indexImage, 1);
+    array[indexRow].deletedDocumentation.push(
+      `section-${sectionId}/${filename}`
+    );
 
-  const handleClickDelete = () => {};
+    setSections(array);
+  };
+
+  const handleClickDelete = (indexRow, indexImage) => {
+    const array = [...sections];
+    array[indexRow].documentation.splice(indexImage, 1);
+    setSections(array);
+  };
 
   const handleChangeDocumentation = (file, index) => {
     console.log(index);
@@ -227,7 +312,7 @@ const AboutUsDetail = () => {
       if (!item.id) {
         insertSection("new", item);
       } else {
-        //
+        insertSection("edit", item);
       }
     });
 
@@ -257,6 +342,7 @@ const AboutUsDetail = () => {
 
   useEffect(() => {
     getDescription();
+    getSections();
   }, []);
 
   useEffect(() => {
@@ -331,7 +417,9 @@ const AboutUsDetail = () => {
           />
           <Input
             value={aboutDetail.licence_number}
-            onChange={(e) => handleChangeDetail("licence_number", e.target.value)}
+            onChange={(e) =>
+              handleChangeDetail("licence_number", e.target.value)
+            }
             type="text"
             placeholder="No Lisence"
           />
