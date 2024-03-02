@@ -232,7 +232,7 @@ const AboutUs = () => {
       <div className="mt-6">
         <Button
           type="gray"
-          onClick={() => navigate(`/admin/pelayanan/tambah/${id}/new`)}
+          onClick={() => navigate(`/admin/about/employee/new`)}
         >
           Tambah
         </Button>

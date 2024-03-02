@@ -11,6 +11,7 @@ import AddEditProject from "../pages/AdminPages/AddEditProject";
 import EditServiceDescription from "../pages/AdminPages/EditServiceDescription";
 import AboutUs from "../pages/AdminPages/AboutUs";
 import AboutUsDetail from "../pages/AdminPages/AboutUsDetail";
+import AddEditEmployee from "../pages/AdminPages/AddEditEmployee";
 
 export const NonAuthRoutes = [
     {
@@ -81,5 +82,13 @@ export const AuthRoutes = [
     {
         path: "/admin/about/:id",
         component: <AboutUsDetail />,
+    },
+    {
+        path: "/admin/about/employee/:type/:id",
+        component: <AddEditEmployee />,
+    },
+    {
+        path: "/admin/about/employee/:type",
+        component: <AddEditEmployee />,
     },
 ]
