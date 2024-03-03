@@ -6,6 +6,7 @@ import SavanaLogo from "../../assets/savanaBig.png";
 import { FaChevronRight } from "react-icons/fa";
 import Pabrik from "../../assets/factory.png";
 import { supabase } from "../../hooks/supabase";
+import KementrianLogo from "../../assets/kementrian.png";
 
 const initValue = [
   {
@@ -41,6 +42,7 @@ const Home = () => {
   const { language, setLoading, setMessage, setStatus, setUser } =
     useContext(LayoutContext);
   const [images, setImages] = useState([...initValue]);
+  const [pelayanan, setPelayanan] = useState([]);
 
   const getPhotosUrl = (path) => {
     const { data } = supabase.storage.from("savana").getPublicUrl(path);
@@ -76,15 +78,37 @@ const Home = () => {
     setLoading(false);
   };
 
+  const getPelayanan = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("services")
+      .select()
+      .limit(3)
+      .order("created_at");
+
+    if (data) {
+      setPelayanan(data);
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
+    getPelayanan();
     getBucketData();
   }, []);
 
   return (
     <div>
-      <div className="relative max-h-[800px]">
+      <div className="relative h-screen flex justify-center items-center flex-col">
         <Carousel
-          className="h-[300px] md:h-[800px] rounded-none"
+          className="h-[300px] md:h-[90%] rounded-none"
           slideInterval={5000}
           leftControl=" "
           rightControl=" "
@@ -93,15 +117,48 @@ const Home = () => {
             <img key={index} alt={item.name} src={item.url} />
           ))}
         </Carousel>
+        <div className="absolute">
+          <h1 className="md:text-5xl font-semibold text-white text-center">
+            Completed Permits, Smooth Business
+          </h1>
+          <p className="md:text-xl font-semibold text-white text-center mt-6">
+            Your permits are completed, your business is
+            <br /> running as planned
+          </p>
+          <div className="flex justify-center items-center mt-10">
+            <div
+              className={`rounded-[24px] py-3 px-6 text-lg font-bold cursor-pointer bg-white text-[#00391C] whitespace-nowrap w-min mr-[30px] cursor-pointer`}
+            >
+              Contact Us
+            </div>
+            <div
+              className={`rounded-[24px] py-3 px-6 text-lg font-bold cursor-pointer bg-transparent text-white border-2 border-white whitespace-nowrap w-min cursor-pointer`}
+            >
+              Learn More
+            </div>
+          </div>
+        </div>
+        <div className="h-[10%] bg-[#D9E3DE] w-full flex justify-center items-center">
+          <i className="mr-3 text-[#929292]">Licenced By: </i>
+          <img src={KementrianLogo} alt="" className="mr-3" />
+          <h3 className="text-[#929292]">
+            Kementrian Lingkungan Hidup dan Kehutanan
+          </h3>
+        </div>
       </div>
-      <div className="absolute bottom-[60%] left-[30px] md:left-[100px] md:bottom-[20%]">
-        <h3 className="md:text-xl font-semibold text-white">
-          {wording[language].landingPage.title}
-        </h3>
-        <h1 className="md:text-5xl font-semibold text-white">
-          {wording[language].landingPage.desc}
-        </h1>
+
+      <div className="px-[30px] py-2 md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[100px] md:flex-row flex-col">
+        <h1>Pelayanan Kami</h1>
+        <p>Kami melayani berbagai sektor dalam menjalani bisnis kami. </p>
+        <div className="grid grid-cols-3">
+          {pelayanan.map((item, index) => (
+            <div key={index}>
+              <img src={item.image_url} alt={item.name} />
+            </div>
+          ))}
+        </div>
       </div>
+
       <div className="px-[30px] py-2 md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[100px] md:flex-row flex-col">
         <div>
           <h2 className="text-[32px] font-semibold tracking-[6.4px]">SAVANA</h2>
