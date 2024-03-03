@@ -23,7 +23,35 @@ const AboutUs = () => {
   const { setLoading, setMessage, setStatus, setUser } =
     useContext(LayoutContext);
   const [aboutData, setAboutData] = useState(initialValue);
-  const [projects, setProjects] = useState([]);
+  const [employee, setEmployee] = useState([]);
+
+  const deleteProfile = async (fileName) => {
+    const { data, error } = await supabase.storage
+      .from("savana")
+      .remove([`profile/${fileName}`]);
+  };
+
+  const handleDeleteProfile = async (profileId) => {
+    setLoading(true);
+    const { error } = await supabase
+      .from("our_team")
+      .delete()
+      .eq("id", profileId);
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+    setLoading(false);
+    setMessage("Employee Deleted!");
+    setStatus(true);
+    setTimeout(() => {
+      setMessage("");
+      getTeams();
+      return;
+    }, 2000);
+  };
 
   const removeUpload = async () => {
     const { error } = await supabase
@@ -120,12 +148,9 @@ const AboutUs = () => {
 
   const getTeams = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("our_team")
-      .select()
-      .eq("service_id", aboutData.id);
+    const { data, error } = await supabase.from("our_team").select();
     if (data) {
-      setProjects(data);
+      setEmployee(data);
     }
 
     if (error) {
@@ -166,9 +191,7 @@ const AboutUs = () => {
       <div>
         <Button
           type="gray"
-          onClick={() =>
-            navigate(`/admin/about/${aboutData.id}`)
-          }
+          onClick={() => navigate(`/admin/about/${aboutData.id}`)}
         >
           Edit
         </Button>
@@ -232,7 +255,7 @@ const AboutUs = () => {
       <div className="mt-6">
         <Button
           type="gray"
-          onClick={() => navigate(`/admin/about/employee/new`)}
+          onClick={() => navigate(`/admin/about/employee/tambah`)}
         >
           Tambah
         </Button>
@@ -250,7 +273,7 @@ const AboutUs = () => {
           </thead>
 
           <tbody className="border">
-            {projects.map((item, index) => (
+            {employee.map((item, index) => (
               <tr key={index}>
                 <td className="border py-2.5 text-center">{index + 1}</td>
                 <td className="border py-2.5 text-center flex justify-center">
@@ -271,7 +294,7 @@ const AboutUs = () => {
                     <BiEdit
                       className="cursor-pointer mr-2"
                       onClick={() =>
-                        navigate(`/admin/pelayanan/edit/${id}/${item.id}`)
+                        navigate(`/admin/about/employee/edit/${item.id}`)
                       }
                       size={30}
                     />
@@ -279,7 +302,10 @@ const AboutUs = () => {
                       fill="red"
                       size={24}
                       className="cursor-pointer"
-                      onClick={() => handleDeleteKlien(item.id)}
+                      onClick={() => {
+                        handleDeleteProfile(item.id);
+                        deleteProfile(item.file_name);
+                      }}
                     />
                   </div>
                 </td>
