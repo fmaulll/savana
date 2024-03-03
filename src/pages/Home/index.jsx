@@ -1,5 +1,5 @@
 import { Carousel } from "flowbite-react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { LayoutContext } from "../../context/LayoutContext";
 import wording from "../../wording.json";
 import SavanaLogo from "../../assets/savanaBig.png";
@@ -7,6 +7,8 @@ import { FaChevronRight } from "react-icons/fa";
 import Pabrik from "../../assets/factory.png";
 import { supabase } from "../../hooks/supabase";
 import KementrianLogo from "../../assets/kementrian.png";
+import CareerPhoto from "../../assets/CareerPhoto.png";
+import { Link } from "react-router-dom";
 
 const initValue = [
   {
@@ -41,8 +43,15 @@ const services = [
 const Home = () => {
   const { language, setLoading, setMessage, setStatus, setUser } =
     useContext(LayoutContext);
+  const [tabValue, setTabValue] = useState(0);
   const [images, setImages] = useState([...initValue]);
   const [pelayanan, setPelayanan] = useState([]);
+  const [proyek, setProyek] = useState([]);
+  const [klien, setKlien] = useState([]);
+  const [tentangKami, setTentangKami] = useState({
+    description: "",
+    logo_url: "",
+  });
 
   const getPhotosUrl = (path) => {
     const { data } = supabase.storage.from("savana").getPublicUrl(path);
@@ -84,6 +93,7 @@ const Home = () => {
       .from("services")
       .select()
       .limit(3)
+      .neq("name", "About Us")
       .order("created_at");
 
     if (data) {
@@ -99,7 +109,71 @@ const Home = () => {
     setLoading(false);
   };
 
+  const getProyek = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("projects")
+      .select()
+      .order("created_at");
+
+    if (data) {
+      setProyek(data);
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+    setLoading(false);
+  };
+
+  const getKlien = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("client")
+      .select()
+      .order("created_at");
+
+    if (data) {
+      setKlien(data);
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+    setLoading(false);
+  };
+
+  const getTentangKami = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("services")
+      .select()
+      .eq("name", "About Us")
+      .single();
+
+    if (data) {
+      setTentangKami(data);
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+    setLoading(false);
+  };
+
   useEffect(() => {
+    getTentangKami();
+    getKlien();
+    getProyek();
     getPelayanan();
     getBucketData();
   }, []);
@@ -147,31 +221,53 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="px-[30px] py-2 md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[100px] md:flex-row flex-col">
-        <h1>Pelayanan Kami</h1>
-        <p>Kami melayani berbagai sektor dalam menjalani bisnis kami. </p>
-        <div className="grid grid-cols-3">
+      <div className="w-full px-[30px] py-2 md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[110px] flex-col">
+        <h1 className="font-bold text-3xl tracking-widest mb-4">
+          PELAYANAN KAMI
+        </h1>
+        <p className="tracking-widest">
+          Kami melayani berbagai sektor dalam menjalani bisnis kami.{" "}
+        </p>
+        <div className="grid grid-cols-3 w-full gap-9 mt-[52px]">
           {pelayanan.map((item, index) => (
-            <div key={index}>
-              <img src={item.image_url} alt={item.name} />
+            <div className="relative flex items-end justify-center" key={index}>
+              <img
+                className="h-[230px] w-full object-cover rounded-lg cursor-pointer border"
+                src={item.image_url}
+                alt={item.name}
+              />
+              <h1 className="absolute mb-2 font-bold text-white">
+                {item.name}
+              </h1>
             </div>
           ))}
         </div>
+        <div className="flex justify-end items-end w-full mt-6">
+          <Link
+            className="border-b border-[#3366CC] text-[#3366CC] cursor-pointer"
+            to="/"
+          >
+            Lihat Detail
+          </Link>
+        </div>
       </div>
 
-      <div className="px-[30px] py-2 md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[100px] md:flex-row flex-col">
+      <div className="px-[30px] py-2 md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[110px] md:flex-row flex-col">
         <div>
           <h2 className="text-[32px] font-semibold tracking-[6.4px]">SAVANA</h2>
           <h3 className="text-2xl text-[#A5A5A5] font-semibold">
-            {wording[language].smallDescription.subTitle}
+            Konsultan Lingkungan
           </h3>
-          <p className="font-xl pt-4 max-w-[1000px]">
-            {wording[language].smallDescription.desc}
-          </p>
-          <div className="py-4 px-6 bg-[#E6EDE9] font-semibold rounded-lg w-min whitespace-nowrap flex items-center mt-5 cursor-pointer">
-            {wording[language].smallDescription.button}{" "}
-            <FaChevronRight className="ml-2" />
-          </div>
+          <div
+            dangerouslySetInnerHTML={{ __html: tentangKami.description }}
+            className="font-xl pt-4 max-w-[1000px]"
+          ></div>
+          <Link className="w-min">
+            <div className="py-4 px-6 bg-[#E6EDE9] font-semibold rounded-lg w-min whitespace-nowrap flex items-center mt-5 cursor-pointer">
+              Baca Lebih Lanjut
+              <FaChevronRight className="ml-2" />
+            </div>
+          </Link>
         </div>
         <img
           className="max-w-[200px] md:max-w-[290px] hidden md:block"
@@ -179,6 +275,7 @@ const Home = () => {
           alt=""
         />
       </div>
+
       <div className="relative w-full px-[100px] mb-[116px]">
         <img
           className="w-full object-cover rounded-2xl"
@@ -189,6 +286,91 @@ const Home = () => {
           Project Documentation
         </h2>
       </div>
+
+      <div className="w-full px-[30px] py-2 md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[110px] flex-col">
+        <h1 className="font-bold text-3xl tracking-widest">PROYEK</h1>
+        <div className="w-full flex justify-between items-center">
+          <div
+            className={``}
+            onClick={() => {
+              if (tabValue == 0) {
+                return;
+              }
+              setTabValue((prev) => prev + 1);
+            }}
+          >
+            left
+          </div>
+          <div className="grid grid-cols-3 gap-[100px] mt-9">
+            {proyek.slice(tabValue, tabValue + 2).map((item, index) => (
+              <div className="relative" key={index}>
+                <img
+                  className="object-cover h-[360px] w-[280px] rounded-lg"
+                  src={item.image_url}
+                  alt=""
+                />
+                <div className="absolute left-[16px] bottom-[16px]">
+                  <span className="text-white">{item.start_date}</span>
+                  <p className="text-lg text-white mt-5 font-semibold">
+                    {item.title}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div
+            className={``}
+            onClick={() => {
+              if (tabValue + 2 > proyek.length - 1) {
+                return;
+              }
+              setTabValue((prev) => prev + 1);
+            }}
+          >
+            right
+          </div>
+        </div>
+      </div>
+
+      <div className="flex justify-between pl-[110px] mt-[200px]">
+        <div className="flex justify-center flex-col">
+          <p className="text-2xl tracking-widest">
+            Mulailah perjalanan karier untuk
+            <br /> berkembang dan sukses dengan
+            <br />
+            bergabung dengan di PT. Savana
+            <br /> Anugerah Lestari!
+          </p>
+
+          <Link className="w-min">
+            <div className="py-4 px-6 bg-[#E6EDE9] font-semibold rounded-lg w-min whitespace-nowrap flex items-center mt-5 cursor-pointer">
+              Bergabung Dengan Kami
+            </div>
+          </Link>
+        </div>
+        <img src={CareerPhoto} alt="" />
+      </div>
+
+      <div className="w-full px-[30px] md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[110px] flex-col mt-[128px]">
+        <h1 className="font-bold text-3xl tracking-widest">KLIEN KAMI</h1>
+        {klien.length > 0 ? (
+          <div className="grid grid-cols-7 w-full gap-[64px] mt-12">
+            {klien.map((item, index) => (
+              <div className="w-[112px]" key={index}>
+                <img
+                  className="border w-[112px] max-h-[112px] object-cover"
+                  src={item.image_url}
+                  alt={item.name}
+                />
+                <p className="text-center">{item.name}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center w-full">Belum ada informasi klien</div>
+        )}
+      </div>
+
       <div className="px-[100px]">
         <h1>Our Services</h1>
         <h3>We serve multiple sectors in the execution of our business</h3>

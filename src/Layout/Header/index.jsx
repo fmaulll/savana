@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import SavanaLogo from "../../assets/savanaLogo.png";
 import IndonesiaFlag from "../../assets/indonesiaFlag.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
 import wording from "../../wording.json";
 import { LayoutContext } from "../../context/LayoutContext";
@@ -86,8 +86,8 @@ const Header = () => {
         />
         <div className="flex hidden md:flex">
           {navigation.map((nav, index) => (
-            <div
-              onClick={() => handleRouting(nav.path)}
+            <Link
+              // onClick={() => handleRouting(nav.path)}
               className={`ml-[50px] font-semibold ${
                 handleActiveNav(nav.path) && "text-[#FFB66B]"
               } cursor-pointer text-xl ${
@@ -101,7 +101,7 @@ const Header = () => {
               key={index}
             >
               {nav.title}
-            </div>
+            </Link>
           ))}
         </div>
 
