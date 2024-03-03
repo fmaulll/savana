@@ -200,7 +200,6 @@ const AddEditProject = () => {
         setStatus(false);
         return;
       }
-      navigate(-1);
     } else {
       let dataHit = {};
 
@@ -242,9 +241,15 @@ const AddEditProject = () => {
         setStatus(false);
         return;
       }
-      navigate(-1);
     }
     setLoading(false);
+    setMessage(type === "edit" ? "Project Edited!" : "Project Created!");
+    setStatus(true);
+    setTimeout(() => {
+      setMessage("");
+      navigate(-1);
+      return;
+    }, 2000);
   };
 
   const getDataProject = async () => {
@@ -454,7 +459,7 @@ const AddEditProject = () => {
                   key={index}
                   className="relative border w-full h-[200px] flex justify-center items-center"
                 >
-                  <span>{item.name}</span>
+                  <span>{item.name.slice(0, 10) + "..."}</span>
                   <div
                     className="absolute top-0 right-0 p-2 bg-red-500 rounded-full cursor-pointer"
                     onClick={() => handleClickDelete(index)}
