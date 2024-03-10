@@ -4,11 +4,12 @@ import { LayoutContext } from "../../context/LayoutContext";
 import wording from "../../wording.json";
 import SavanaLogo from "../../assets/savanaBig.png";
 import { FaChevronRight } from "react-icons/fa";
-import Pabrik from "../../assets/factory.png";
+import TeamPhoto from "../../assets/team.png";
 import { supabase } from "../../hooks/supabase";
 import KementrianLogo from "../../assets/kementrian.png";
 import CareerPhoto from "../../assets/CareerPhoto.png";
 import { Link } from "react-router-dom";
+import { FaArrowCircleRight, FaArrowCircleLeft } from "react-icons/fa";
 
 const initValue = [
   {
@@ -33,11 +34,13 @@ const initValue = [
   },
 ];
 
-const services = [
-  { label: "Industry", src: "" },
-  { label: "Plantation", src: "" },
-  { label: "Mining", src: "" },
-  { label: "Transportation", src: "" },
+const initBerita = [
+  {
+    title:
+      "Lorem ipsum dolor sit amet consectetur. In id ornare lectus risus est magna tellus sed.",
+    keyword: "Batu Bara, Reboisasi",
+    created_at: "Selasa 9 September 2023",
+  },
 ];
 
 const Home = () => {
@@ -52,6 +55,7 @@ const Home = () => {
     description: "",
     logo_url: "",
   });
+  const [berita, setBerita] = useState(initBerita);
 
   const getPhotosUrl = (path) => {
     const { data } = supabase.storage.from("savana").getPublicUrl(path);
@@ -188,7 +192,7 @@ const Home = () => {
           rightControl=" "
         >
           {images.map((item, index) => (
-            <img key={index} alt={item.name} src={item.url} />
+            <img loading="lazy" key={index} alt={item.name} src={item.url} />
           ))}
         </Carousel>
         <div className="absolute">
@@ -214,7 +218,7 @@ const Home = () => {
         </div>
         <div className="h-[10%] bg-[#D9E3DE] w-full flex justify-center items-center">
           <i className="mr-3 text-[#929292]">Licenced By: </i>
-          <img src={KementrianLogo} alt="" className="mr-3" />
+          <img loading="lazy" src={KementrianLogo} alt="" className="mr-3" />
           <h3 className="text-[#929292]">
             Kementrian Lingkungan Hidup dan Kehutanan
           </h3>
@@ -232,6 +236,7 @@ const Home = () => {
           {pelayanan.map((item, index) => (
             <div className="relative flex items-end justify-center" key={index}>
               <img
+                loading="lazy"
                 className="h-[230px] w-full object-cover rounded-lg cursor-pointer border"
                 src={item.image_url}
                 alt={item.name}
@@ -245,7 +250,7 @@ const Home = () => {
         <div className="flex justify-end items-end w-full mt-6">
           <Link
             className="border-b border-[#3366CC] text-[#3366CC] cursor-pointer"
-            to="/"
+            to="/services"
           >
             Lihat Detail
           </Link>
@@ -270,20 +275,22 @@ const Home = () => {
           </Link>
         </div>
         <img
+          loading="lazy"
           className="max-w-[200px] md:max-w-[290px] hidden md:block"
           src={SavanaLogo}
           alt=""
         />
       </div>
 
-      <div className="relative w-full px-[100px] mb-[116px]">
+      <div className="relative w-full px-[110px] mb-[115px]">
         <img
+          loading="lazy"
           className="w-full object-cover rounded-2xl"
-          src={Pabrik}
-          alt="Pabrik"
+          src={TeamPhoto}
+          alt="TeamPhoto"
         />
-        <h2 className="absolute bottom-[20px] absolute left-1/2 transform -translate-x-1/2 font-semibold text-2xl text-white">
-          Project Documentation
+        <h2 className="absolute bottom-[20px] absolute left-1/2 transform -translate-x-1/2 font-semibold text-2xl text-white tracking-widest">
+          “Work hard, have fun, make history.”
         </h2>
       </div>
 
@@ -299,13 +306,20 @@ const Home = () => {
               setTabValue((prev) => prev + 1);
             }}
           >
-            left
+            <FaArrowCircleLeft
+              size={50}
+              fill={`${tabValue != 0 ? "#004723" : "gray"}`}
+              className={`${
+                tabValue == 0 ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
+            />
           </div>
           <div className="grid grid-cols-3 gap-[100px] mt-9">
             {proyek.slice(tabValue, tabValue + 2).map((item, index) => (
               <div className="relative" key={index}>
                 <img
-                  className="object-cover h-[360px] w-[280px] rounded-lg"
+                  loading="lazy"
+                  className="object-cover h-[360px] w-[280px] rounded-lg shadow-xl"
                   src={item.image_url}
                   alt=""
                 />
@@ -327,7 +341,15 @@ const Home = () => {
               setTabValue((prev) => prev + 1);
             }}
           >
-            right
+            <FaArrowCircleRight
+              size={50}
+              fill={`${tabValue + 2 > proyek.length - 1 ? "gray" : "#004723"}`}
+              className={`${
+                tabValue + 2 > proyek.length - 1
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer"
+              }`}
+            />
           </div>
         </div>
       </div>
@@ -348,7 +370,7 @@ const Home = () => {
             </div>
           </Link>
         </div>
-        <img src={CareerPhoto} alt="" />
+        <img loading="lazy" src={CareerPhoto} alt="" />
       </div>
 
       <div className="w-full px-[30px] md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[110px] flex-col mt-[128px]">
@@ -358,6 +380,7 @@ const Home = () => {
             {klien.map((item, index) => (
               <div className="w-[112px]" key={index}>
                 <img
+                  loading="lazy"
                   className="border w-[112px] max-h-[112px] object-cover"
                   src={item.image_url}
                   alt={item.name}
@@ -371,19 +394,28 @@ const Home = () => {
         )}
       </div>
 
-      <div className="px-[100px]">
-        <h1>Our Services</h1>
-        <h3>We serve multiple sectors in the execution of our business</h3>
-        <div className="flex justify-between items-center">
-          {services.map((item, index) => (
-            <div className="w-[224px] rounded-2xl shadow-2xl" key={index}>
+      <div className="w-full px-[30px] py-2 md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[110px] flex-col">
+        <h1 className="font-bold text-3xl tracking-widest mb-9">
+          TRENDING TOPIK LINGKUNGAN
+        </h1>
+        <div className="w-full">
+          {berita.map((item, index) => (
+            <div
+              key={index}
+              className="w-full px-12 py-6 rounded-xl border flex items-center"
+            >
               <img
-                className="w-full object-cover rounded-t-2xl h-[253px]"
-                src={Pabrik}
-                alt="Pabrik"
+                loading="lazy"
+                className="border rounded-xl w-[260px] h-[168px] mr-6"
+                src=""
+                alt=""
               />
-              <div className="py-4 flex justify-center items-center bg-white rounded-b-2xl">
-                {item.label}
+              <div className="flex justify-center items-start flex-col">
+                <span className="font-bold text-[#B7B7B7] ">
+                  {item.created_at}
+                </span>
+                <h1 className="text-xl font-bold mt-6">{item.title}</h1>
+                <h3 className="font-bold mt-6">{item.keyword}</h3>
               </div>
             </div>
           ))}

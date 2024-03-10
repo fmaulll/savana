@@ -1,4 +1,5 @@
 import Home from "../pages/Home"
+import Pelayanan from "../pages/Pelayanan"
 import Career from "../pages/Career"
 import Dashboard from "../pages/AdminPages/Dashboard"
 import AdminLogin from "../pages/AdminLogin"
@@ -19,8 +20,8 @@ export const NonAuthRoutes = [
         component: <Home />
     },
     {
-        path: "/markets",
-        component: <div>asd</div>
+        path: "/services",
+        component: <Pelayanan />
     },
     {
         path: "/news",

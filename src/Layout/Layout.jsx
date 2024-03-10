@@ -39,7 +39,7 @@ const Layout = ({ children }) => {
           ) : (
             <Fragment>
               <Header />
-              <div className="min-h-screen">{children}</div>
+              <div className="min-h-screen pt-[122px] pb-[100px]">{children}</div>
               <Footer />
             </Fragment>
           )}

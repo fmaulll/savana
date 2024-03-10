@@ -43,8 +43,8 @@ const Header = () => {
 
   const navigation = [
     {
-      title: wording[language].nav.markets,
-      path: "/markets",
+      title: "Pelayanan",
+      path: "/services",
     },
     {
       title: wording[language].nav.news,
