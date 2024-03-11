@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
         <Fragment>
           <AuthorizedHeader />
           <AuthorizedSidebar />
-          <div className="pt-[195px] pl-[300px] pr-9 pb-8">
+          <div className="pt-[195px] pl-[300px] pr-9 pb-8 min-h-screen">
             {children} 
           </div>
         </Fragment>
