@@ -10,6 +10,8 @@ import KementrianLogo from "../../assets/kementrian.png";
 import CareerPhoto from "../../assets/CareerPhoto.png";
 import { Link } from "react-router-dom";
 import { FaArrowCircleRight, FaArrowCircleLeft } from "react-icons/fa";
+import HomeLoading from "../../components/HomeLoading";
+import { formatFullDate } from "../../hooks/formatDate";
 
 const initValue = [
   {
@@ -44,7 +46,7 @@ const initBerita = [
 ];
 
 const Home = () => {
-  const { language, setLoading, setMessage, setStatus, setUser } =
+  const { language, setMessage, setStatus, setUser } =
     useContext(LayoutContext);
   const [tabValue, setTabValue] = useState(0);
   const [images, setImages] = useState([...initValue]);
@@ -56,6 +58,7 @@ const Home = () => {
     logo_url: "",
   });
   const [berita, setBerita] = useState(initBerita);
+  const [loading, setLoading] = useState(initBerita);
 
   const getPhotosUrl = (path) => {
     const { data } = supabase.storage.from("savana").getPublicUrl(path);
@@ -183,8 +186,8 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
-      <div className="relative h-screen flex justify-center items-center flex-col">
+    <div className="relative">
+      <div className="relative h-screen flex justify-center items-center flex-col bg-[#004723] ">
         <Carousel
           className="h-[300px] md:h-[90%] rounded-none"
           slideInterval={5000}
@@ -316,20 +319,22 @@ const Home = () => {
           </div>
           <div className="grid grid-cols-3 gap-[100px] mt-9">
             {proyek.slice(tabValue, tabValue + 2).map((item, index) => (
-              <div className="relative" key={index}>
-                <img
-                  loading="lazy"
-                  className="object-cover h-[360px] w-[280px] rounded-lg shadow-xl"
-                  src={item.image_url}
-                  alt=""
-                />
-                <div className="absolute left-[16px] bottom-[16px]">
-                  <span className="text-white">{item.start_date}</span>
-                  <p className="text-lg text-white mt-5 font-semibold">
-                    {item.title}
-                  </p>
+              <Link to={`/article/project/${item.id}`}>
+                <div className="relative" key={index}>
+                  <img
+                    loading="lazy"
+                    className="object-cover h-[360px] w-[280px] rounded-lg shadow-xl"
+                    src={item.image_url}
+                    alt=""
+                  />
+                  <div className="absolute left-[16px] bottom-[16px]">
+                    <span className="text-white">{item.start_date}</span>
+                    <p className="text-lg text-white mt-5 font-semibold">
+                      {item.title}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
           <div
@@ -399,28 +404,31 @@ const Home = () => {
           TRENDING TOPIK LINGKUNGAN
         </h1>
         <div className="w-full">
-          {berita.map((item, index) => (
-            <div
-              key={index}
-              className="w-full px-12 py-6 rounded-xl border flex items-center"
-            >
-              <img
-                loading="lazy"
-                className="border rounded-xl w-[260px] h-[168px] mr-6"
-                src=""
-                alt=""
-              />
-              <div className="flex justify-center items-start flex-col">
-                <span className="font-bold text-[#B7B7B7] ">
-                  {item.created_at}
-                </span>
-                <h1 className="text-xl font-bold mt-6">{item.title}</h1>
-                <h3 className="font-bold mt-6">{item.keyword}</h3>
+          {proyek.map((item, index) => (
+            <Link to={`/article/project/${item.id}`}>
+              <div
+                key={index}
+                className={`${index !== 0 && 'mt-8'} w-full px-12 py-6 rounded-xl border flex items-center`}
+              >
+                <img
+                  loading="lazy"
+                  className="border rounded-xl w-[260px] h-[168px] mr-6 object-cover"
+                  src={item.image_url}
+                  alt=""
+                />
+                <div className="flex justify-center items-start flex-col">
+                  <span className="font-bold text-[#B7B7B7] ">
+                    {formatFullDate(item.created_at)}
+                  </span>
+                  <h1 className="text-xl font-bold mt-6">{item.title}</h1>
+                  <h3 className="font-bold mt-6">{item.keyword}</h3>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
+      <HomeLoading isLoading={loading} />
     </div>
   );
 };
