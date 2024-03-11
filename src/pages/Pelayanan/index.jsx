@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LayoutContext } from "../../context/LayoutContext";
 import { supabase } from "../../hooks/supabase";
 
@@ -45,10 +45,18 @@ const Pelayanan = () => {
       </p>
       <div className="grid grid-cols-2 w-full gap-x-[78px] gap-y-[32px] mt-14">
         {services.map((item, index) => (
-          <div className="w-full relative flex justify-center" key={index}>
-            <img className="w-full h-[432px] rounded-xl border object-cover" src={item.image_url} alt={item.name}/>
-            <h1 className="absolute bottom-[24px] text-3xl font-bold text-white">{item.name}</h1>
-          </div>
+          <Link to={`/services/detail/${item.id}`}>
+            <div className="w-full relative flex justify-center" key={index}>
+              <img
+                className="w-full h-[432px] rounded-xl border object-cover"
+                src={item.image_url}
+                alt={item.name}
+              />
+              <h1 className="absolute bottom-[24px] text-3xl font-bold text-white">
+                {item.name}
+              </h1>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
