@@ -14,3 +14,23 @@ li {
   list-style-type: circle;
   display: list-item;
 }
+
+.slick-next,
+.slick-next:hover,
+.slick-next:active {
+  right: -4rem;
+}
+
+.slick-prev,
+.slick-prev:hover,
+.slick-prev:active {
+  left: -4rem;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  background-color: #004723;
+  border-radius: 100%;
+  left: -4rem;
+  z-index: 999;
+}
