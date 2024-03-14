@@ -9,12 +9,23 @@ import Footer from "./Footer";
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthorizedHeader from "./Authorized/Header";
 import AuthorizedSidebar from "./Authorized/Sidebar";
+import BackHeader from "./Header/BackHeader";
 
 const Layout = ({ children }) => {
   const { loading, message, status, user, setUser, setMessage, setStatus, setLoading } =
     useContext(LayoutContext);
   const { pathname } = useLocation();
   const [openNewPost, setOpenNewPost] = useState(false);
+
+  const isSelectedRoute = () => {
+    if (pathname.includes('/about/team')) {
+      return true
+    }
+    if (pathname.includes('/services/detail')) {
+      return true
+    }
+    return false;
+  }
 
   return (
     <div className="bg-white">
@@ -28,9 +39,9 @@ const Layout = ({ children }) => {
         </Fragment>
       ) : (
         <Fragment>
-          {pathname === "/" ? (
+          {pathname === "/" || isSelectedRoute() ? (
             <Fragment>
-              <Header />
+              {isSelectedRoute() ? <BackHeader /> : <Header /> }
               <div className="min-h-screen">{children}</div>
               <Footer />
             </Fragment>
