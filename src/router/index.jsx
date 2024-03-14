@@ -16,6 +16,8 @@ import AddEditEmployee from "../pages/AdminPages/AddEditEmployee";
 import DetailPelayanan from "../pages/Pelayanan/DetailPelayanan";
 import DetailProyek from "../pages/Proyek/DetailProyek";
 import Proyek from "../pages/Proyek";
+import TentangKami from "../pages/TentangKami";
+import DetailTeam from "../pages/TentangKami/DetailTeam";
 
 export const NonAuthRoutes = [
   {
@@ -48,7 +50,11 @@ export const NonAuthRoutes = [
   },
   {
     path: "/about",
-    component: <div>asd</div>,
+    component: <TentangKami />,
+  },
+  {
+    path: "/about/team/:id",
+    component: <DetailTeam />,
   },
   {
     path: "/admin/login",
