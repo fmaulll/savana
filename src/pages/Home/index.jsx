@@ -195,7 +195,7 @@ const Home = () => {
           rightControl=" "
         >
           {images.map((item, index) => (
-            <img loading="lazy" key={index} alt={item.name} src={item.url} />
+            <img className="object-cover" loading="lazy" key={index} alt={item.name} src={item.url} />
           ))}
         </Carousel>
         <div className="absolute">
@@ -319,8 +319,8 @@ const Home = () => {
           </div>
           <div className="grid grid-cols-3 gap-[100px] mt-9">
             {proyek.slice(tabValue, tabValue + 2).map((item, index) => (
-              <Link to={`/article/project/${item.id}`}>
-                <div className="relative" key={index}>
+              <Link key={index} to={`/article/project/${item.id}`}>
+                <div className="relative">
                   <img
                     loading="lazy"
                     className="object-cover h-[360px] w-[280px] rounded-lg shadow-xl"
@@ -405,11 +405,8 @@ const Home = () => {
         </h1>
         <div className="w-full">
           {proyek.map((item, index) => (
-            <Link to={`/article/project/${item.id}`}>
-              <div
-                key={index}
-                className={`${index !== 0 && 'mt-8'} w-full px-12 py-6 rounded-xl border flex items-center`}
-              >
+            <Link key={index} to={`/article/project/${item.id}`}>
+              <div className={`${index !== 0 && 'mt-8'} w-full px-12 py-6 rounded-xl border flex items-center`}>
                 <img
                   loading="lazy"
                   className="border rounded-xl w-[260px] h-[168px] mr-6 object-cover"
