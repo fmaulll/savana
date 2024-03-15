@@ -59,7 +59,7 @@ const Proyek = () => {
                 {item.title}
               </h1>
               <div className="flex justify-end w-full mt-5">
-                <Link className="text-white border-b-2">Lihat Detail</Link>
+                <Link to={`/article/project/${item.id}`} className="text-white border-b-2">Lihat Detail</Link>
               </div>
             </div>
           </div>
