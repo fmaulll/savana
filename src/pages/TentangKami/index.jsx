@@ -82,6 +82,7 @@ const TentangKami = () => {
 
           <div
             className={`rounded-[24px] py-3 px-6 text-lg font-bold cursor-pointer bg-white text-[#00391C] whitespace-nowrap w-min mr-[30px] cursor-pointer mt-[74px]`}
+            onClick={() => navigate('/about/detail')}
           >
             Detail
           </div>
