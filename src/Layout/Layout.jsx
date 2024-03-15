@@ -24,6 +24,9 @@ const Layout = ({ children }) => {
     if (pathname.includes('/services/detail')) {
       return true
     }
+    if (pathname.includes('/about/detail')) {
+      return true
+    }
     return false;
   }
 
