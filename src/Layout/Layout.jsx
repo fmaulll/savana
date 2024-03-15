@@ -9,6 +9,7 @@ import Footer from "./Footer";
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthorizedHeader from "./Authorized/Header";
 import AuthorizedSidebar from "./Authorized/Sidebar";
+import BackHeader from "./Header/BackHeader";
 
 const Layout = ({ children }) => {
   const { loading, message, status, user, setUser, setMessage, setStatus, setLoading } =
@@ -16,21 +17,34 @@ const Layout = ({ children }) => {
   const { pathname } = useLocation();
   const [openNewPost, setOpenNewPost] = useState(false);
 
+  const isSelectedRoute = () => {
+    if (pathname.includes('/about/team')) {
+      return true
+    }
+    if (pathname.includes('/services/detail')) {
+      return true
+    }
+    if (pathname.includes('/about/detail')) {
+      return true
+    }
+    return false;
+  }
+
   return (
     <div className="bg-white">
       {user ? (
         <Fragment>
           <AuthorizedHeader />
           <AuthorizedSidebar />
-          <div className="pt-[195px] pl-[300px] pr-9 pb-8">
+          <div className="pt-[195px] pl-[300px] pr-9 pb-8 min-h-screen">
             {children} 
           </div>
         </Fragment>
       ) : (
         <Fragment>
-          {pathname === "/" ? (
+          {pathname === "/" || isSelectedRoute() ? (
             <Fragment>
-              <Header />
+              {isSelectedRoute() ? <BackHeader /> : <Header /> }
               <div className="min-h-screen">{children}</div>
               <Footer />
             </Fragment>
@@ -39,7 +53,7 @@ const Layout = ({ children }) => {
           ) : (
             <Fragment>
               <Header />
-              <div className="min-h-screen">{children}</div>
+              <div className="min-h-screen pt-[122px] pb-[100px]">{children}</div>
               <Footer />
             </Fragment>
           )}

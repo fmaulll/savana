@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import SavanaLogo from "../../assets/savanaLogo.png";
 import IndonesiaFlag from "../../assets/indonesiaFlag.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
 import wording from "../../wording.json";
 import { LayoutContext } from "../../context/LayoutContext";
@@ -26,7 +26,7 @@ const Header = () => {
   };
 
   const handleActiveNav = (path) => {
-    return path === window.location.pathname;
+    return window.location.pathname.includes(path);
   };
 
   const handleLanguage = () => {
@@ -43,12 +43,12 @@ const Header = () => {
 
   const navigation = [
     {
-      title: wording[language].nav.markets,
-      path: "/markets",
+      title: "Pelayanan",
+      path: "/services",
     },
     {
-      title: wording[language].nav.news,
-      path: "/news",
+      title: "Artikel",
+      path: "/article",
     },
     {
       title: wording[language].nav.career,
@@ -66,17 +66,6 @@ const Header = () => {
         !scrolling && window.location.pathname === "/" ? "" : "bg-white"
       } z-10`}
     >
-      {/* <div className="flex justify-end px-[30px] md:px-[100px] hidden md:flex">
-        <div className="py-3 px-6 rounded-full bg-[#DADADA] flex items-center relative group">
-          <img className="mr-3" src={IndonesiaFlag} alt="Indonesian flag" />
-          {language === "ID" ? "Indonesia" : "English"}
-          <FaChevronDown className="ml-3 bg-transparent" />
-          <div onClick={handleLanguage} className="w-full py-3 px-6 rounded-full bg-[#DADADA] flex items-center absolute group-hover:visible invisible mt-[98px] left-0 cursor-pointer">
-            <img className="mr-3" src={IndonesiaFlag} alt="Indonesian flag" />
-            {language === "ID" ? "English" : "Indonesia"}
-          </div>
-        </div>
-      </div> */}
       <div className="w-full flex justify-between items-center px-[30px] md:px-[110px]">
         <img
           className="cursor-pointer"
@@ -86,8 +75,8 @@ const Header = () => {
         />
         <div className="flex hidden md:flex">
           {navigation.map((nav, index) => (
-            <div
-              onClick={() => handleRouting(nav.path)}
+            <Link
+              // onClick={() => handleRouting(nav.path)}
               className={`ml-[50px] font-semibold ${
                 handleActiveNav(nav.path) && "text-[#FFB66B]"
               } cursor-pointer text-xl ${
@@ -101,7 +90,7 @@ const Header = () => {
               key={index}
             >
               {nav.title}
-            </div>
+            </Link>
           ))}
         </div>
 

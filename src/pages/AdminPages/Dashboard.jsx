@@ -84,7 +84,11 @@ const Dashboard = () => {
 
   const handleSubmitAddKlien = async (dataKlien) => {
     setLoading(true);
-    let dataRequest = { name: dataKlien.name, image_url: "", file_name: dataKlien.file.name };
+    let dataRequest = {
+      name: dataKlien.name,
+      image_url: "",
+      file_name: dataKlien.file.name,
+    };
 
     const { data, error } = await supabase.storage
       .from("savana")
@@ -184,16 +188,13 @@ const Dashboard = () => {
     setLoading(false);
   };
 
-  const getCardData = async () => {
-    let dataAllCard = {
-      Proyek: 0,
-      "Berita Pilihan": 0,
-      Karir: 0,
-    };
-    const { data, error } = await supabase.from("Career").select("role");
+  const getProjectLength = async () => {
+    const { data, error } = await supabase
+      .from("projects")
+      .select("created_at");
 
     if (data.length > 0) {
-      dataAllCard["Karir"] = data.length;
+      return data.length;
     }
 
     if (error) {
@@ -202,6 +203,33 @@ const Dashboard = () => {
       setStatus(false);
       return;
     }
+
+    return 0;
+  };
+
+  const getCareerLength = async () => {
+    const { data, error } = await supabase.from("Career").select("role");
+
+    if (data.length > 0) {
+      return data.length;
+    }
+
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+
+    return 0;
+  };
+
+  const getCardData = async () => {
+    let dataAllCard = {
+      Proyek: await getProjectLength(),
+      "Berita Pilihan": 0,
+      Karir: await getCareerLength(),
+    };
 
     setCardData(dataAllCard);
   };
@@ -320,7 +348,12 @@ const Dashboard = () => {
                       onClick={() => navigate(`/admin/karir/edit/${item.id}`)}
                       size={30}
                     />
-                    <FaRegTrashAlt fill="red" size={24} className="cursor-pointer" onClick={() => handleDeleteKlien(item.id)} />
+                    <FaRegTrashAlt
+                      fill="red"
+                      size={24}
+                      className="cursor-pointer"
+                      onClick={() => handleDeleteKlien(item.id)}
+                    />
                   </div>
                 </td>
               </tr>

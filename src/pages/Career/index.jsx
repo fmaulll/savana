@@ -30,7 +30,7 @@ const Career = () => {
     getCareerData();
   }, []);
   return (
-    <div className="pt-[180px] px-[110px]">
+    <div className="mt-20 px-[110px]">
       {careerData.length > 0 && <p className="text-xl">
         Tersedia <span className="font-bold">{careerData.length} Job</span>
       </p>}

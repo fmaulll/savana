@@ -38,7 +38,7 @@ const Details = () => {
   return (
     <div>
       <div className="h-[526px] bg-[#004723] flex items-center flex-col">
-        <h1 className="text-white text-[48px] font-medium mb-2.5 mt-[252px]">
+        <h1 className="text-white text-[48px] font-medium mb-2.5 mt-[200px]">
           {jobDetailsData.role}
         </h1>
         <Button>Apply Now</Button>

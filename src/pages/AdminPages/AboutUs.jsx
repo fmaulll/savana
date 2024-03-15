@@ -8,46 +8,79 @@ import { supabase } from "../../hooks/supabase";
 import { BiEdit } from "react-icons/bi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { SlPaperClip } from "react-icons/sl";
-import { getPhotosUrl } from "../../hooks/getUrl";
 import { RiExternalLinkLine } from "react-icons/ri";
 
-const DetailService = () => {
-  const { id } = useParams();
+const initialValue = {
+  name: "",
+  description: "",
+  image_url: "",
+  file_name: "",
+  file: "",
+};
+
+const AboutUs = () => {
   const navigate = useNavigate();
   const { setLoading, setMessage, setStatus, setUser } =
     useContext(LayoutContext);
-  const [serviceDetail, setServiceDetail] = useState({
-    description: "",
-    image_url: "",
-    file_name: "",
-    file: "",
-  });
-  const [projects, setProjects] = useState([]);
+  const [aboutData, setAboutData] = useState(initialValue);
+  const [employee, setEmployee] = useState([]);
 
-  const deletePhotoFromService = async () => {
+  const deleteProfile = async (fileName) => {
+    const { data, error } = await supabase.storage
+      .from("savana")
+      .remove([`profile/${fileName}`]);
+  };
+
+  const handleDeleteProfile = async (profileId) => {
     setLoading(true);
+    const { error } = await supabase
+      .from("our_team")
+      .delete()
+      .eq("id", profileId);
+    if (error) {
+      setLoading(false);
+      setMessage(error.message);
+      setStatus(false);
+      return;
+    }
+    setLoading(false);
+    setMessage("Employee Deleted!");
+    setStatus(true);
+    setTimeout(() => {
+      setMessage("");
+      getTeams();
+      return;
+    }, 2000);
+  };
+
+  const removeUpload = async () => {
     const { error } = await supabase
       .from("services")
       .update({ image_url: "", file_name: "" })
-      .eq("id", id);
+      .eq("id", aboutData.id);
     if (error) {
       setLoading(false);
       setMessage(error.message);
       setStatus(false);
       return;
     }
-    getServiceDetail();
     setLoading(false);
   };
 
-  const handleDeletePhoto = async (file) => {
+  const handleDeletePhoto = async () => {
     setLoading(true);
+    setAboutData((prev) => {
+      return { ...prev, image_url: "", file: "" };
+    });
+
     const { data, error } = await supabase.storage
       .from("savana")
-      .remove(["service/" + file]);
+      .remove([`project/${aboutData.file_name}`]);
 
     if (data) {
-      deletePhotoFromService();
+      await removeUpload().then(() => {
+        getServiceDetail();
+      });
     }
 
     if (error) {
@@ -59,12 +92,12 @@ const DetailService = () => {
     setLoading(false);
   };
 
-  const insertServicePhoto = async (dataRequest) => {
+  const insertUpload = async (dataRequest) => {
     setLoading(true);
     const { error } = await supabase
       .from("services")
       .update(dataRequest)
-      .eq("id", id);
+      .eq("id", aboutData.id);
 
     if (error) {
       setLoading(false);
@@ -72,27 +105,38 @@ const DetailService = () => {
       setStatus(false);
       return;
     }
-    getServiceDetail();
+
     setLoading(false);
+    getServiceDetail();
   };
 
-  const handleUpload = async (file) => {
+  const getPhotosUrl = (path) => {
+    const { data } = supabase.storage.from("savana").getPublicUrl(path);
+
+    return data.publicUrl;
+  };
+
+  const handleUpload = async (key, file) => {
     setLoading(true);
-    const fileName = file.name + Date.now();
+    let dataRequest = {};
     const { data, error } = await supabase.storage
       .from("savana")
-      .upload(`service/${fileName}`, file, {
+      .upload("project/" + file.name + Date.now(), file, {
         cacheControl: "3600",
         upsert: false,
       });
 
     if (data) {
-      const dataRequest = {
+      dataRequest = {
         image_url: getPhotosUrl(data.path),
-        file_name: fileName,
+        file_name: file.name,
       };
-      insertServicePhoto(dataRequest);
+      setAboutData((prev) => {
+        return { ...prev, ...dataRequest };
+      });
+      await insertUpload(dataRequest);
     }
+
     if (error) {
       setLoading(false);
       setMessage(error.message);
@@ -102,14 +146,11 @@ const DetailService = () => {
     setLoading(false);
   };
 
-  const getProjects = async () => {
+  const getTeams = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("projects")
-      .select()
-      .eq("service_id", id);
+    const { data, error } = await supabase.from("our_team").select();
     if (data) {
-      setProjects(data);
+      setEmployee(data);
     }
 
     if (error) {
@@ -126,10 +167,10 @@ const DetailService = () => {
     const { data, error } = await supabase
       .from("services")
       .select()
-      .eq("id", id)
+      .eq("name", "About Us")
       .single();
     if (data) {
-      setServiceDetail(data);
+      setAboutData(data);
     }
 
     if (error) {
@@ -143,54 +184,65 @@ const DetailService = () => {
 
   useEffect(() => {
     getServiceDetail();
-    getProjects();
+    getTeams();
   }, []);
   return (
     <Fragment>
-      {!serviceDetail || !serviceDetail.name ? (
-        ""
-      ) : (
-        <div className="w-full font-bold text-2xl">{serviceDetail.name}</div>
-      )}
-      <div className="mt-4">
-        <input
-          onChange={(e) => handleUpload(e.target.files[0])}
-          id="uploadHighlight"
-          type="file"
-          className="hidden"
-        />
-        {serviceDetail.image_url || serviceDetail.file ? (
+      <div>
+        <Button
+          type="gray"
+          onClick={() => navigate(`/admin/about/${aboutData.id}`)}
+        >
+          Edit
+        </Button>
+        {!aboutData || !aboutData.description ? (
+          <div className="text-center mt-3">No description</div>
+        ) : (
           <div
-            className={`mb-3 py-4 px-4 bg-[#D3D3D3] flex items-center rounded-lg w-min rounded-[4px] border-[#929292]`}
+            className="mt-3"
+            dangerouslySetInnerHTML={{ __html: aboutData.description }}
+          ></div>
+        )}
+      </div>
+      <input
+        onChange={(e) => handleUpload("file", e.target.files[0])}
+        id="uploadHighlightF"
+        type="file"
+        className="hidden"
+      />
+      <div className="mt-4">
+        {aboutData.image_url || aboutData.file ? (
+          <div
+            className={`mb-3 py-4 px-4 bg-[#D3D3D3] flex items-center rounded-lg w-min whitespace-nowrap rounded-[4px] border-[#929292]`}
           >
             <FaRegTrashAlt
               className="mr-2 bg-red-500 rounded-full p-2 cursor-pointer"
               fill="white"
               size={32}
-              onClick={() => handleDeletePhoto(serviceDetail.file_name)}
+              onClick={handleDeletePhoto}
             />
             <span
               onClick={() => {
-                if (serviceDetail.image_url) {
-                  window.open(serviceDetail.image_url);
+                if (aboutData.image_url) {
+                  window.open(aboutData.image_url);
                 }
               }}
               className={`text-[#7C7C7C] font-medium flex ${
-                serviceDetail.image_url ? "cursor-pointer" : ""
+                aboutData.image_url ? "cursor-pointer" : ""
               }`}
             >
-              {serviceDetail.image_url
-                ? serviceDetail.file_name.slice(0, 16) + "..."
-                : serviceDetail.file.name.slice(0, 16) + "..."}{" "}
-              {serviceDetail.image_url && (
+              {aboutData.image_url
+                ? aboutData.file_name.slice(0, 16) + "..."
+                : aboutData.file.name.slice(0, 16) + "..."}{" "}
+              {aboutData.image_url && (
                 <RiExternalLinkLine size={24} className="ml-2" />
               )}
             </span>
           </div>
         ) : (
-          <label htmlFor="uploadHighlight">
+          <label htmlFor="uploadHighlightF">
             <div
-              className={`mb-3 py-4 px-4 bg-[#D3D3D3] cursor-pointer flex items-center rounded-lg w-full rounded-[4px] border-[#929292] w-min whitespace-nowrap`}
+              className={`mb-3 py-4 px-4 bg-[#D3D3D3] w-min whitespace-nowrap cursor-pointer flex items-center rounded-lg w-full rounded-[4px] border-[#929292]`}
             >
               <SlPaperClip className="mr-2" size={24} />
               <span className="text-[#7C7C7C] font-medium">
@@ -199,25 +251,11 @@ const DetailService = () => {
             </div>
           </label>
         )}
-        <Button
-          type="gray"
-          onClick={() => navigate(`/admin/pelayanan/description/service/${id}`)}
-        >
-          Edit
-        </Button>
-        {!serviceDetail || !serviceDetail.description ? (
-          <div className="text-center mt-3">No description</div>
-        ) : (
-          <div
-            className="mt-3"
-            dangerouslySetInnerHTML={{ __html: serviceDetail.description }}
-          ></div>
-        )}
       </div>
       <div className="mt-6">
         <Button
           type="gray"
-          onClick={() => navigate(`/admin/pelayanan/tambah/${id}/new`)}
+          onClick={() => navigate(`/admin/about/employee/tambah`)}
         >
           Tambah
         </Button>
@@ -226,17 +264,16 @@ const DetailService = () => {
           <thead className="border bg-[#D9E3DE]">
             <tr>
               <th className="border py-2.5">No</th>
-              <th className="border py-2.5">Gambar</th>
-              <th className="border py-2.5">Judul</th>
-              <th className="border py-2.5">Lokasi</th>
-              <th className="border py-2.5">Jenis Kegiatan</th>
-              <th className="border py-2.5">Klien</th>
+              <th className="border py-2.5">Foto</th>
+              <th className="border py-2.5">Nama</th>
+              <th className="border py-2.5">Posisi</th>
+              <th className="border py-2.5">Status</th>
               <th className="border py-2.5">Action</th>
             </tr>
           </thead>
 
           <tbody className="border">
-            {projects.map((item, index) => (
+            {employee.map((item, index) => (
               <tr key={index}>
                 <td className="border py-2.5 text-center">{index + 1}</td>
                 <td className="border py-2.5 text-center flex justify-center">
@@ -247,18 +284,17 @@ const DetailService = () => {
                     alt={item.name}
                   />
                 </td>
-                <td className="border py-2.5 text-center">{item.title}</td>
-                <td className="border py-2.5 text-center">{item.location}</td>
+                <td className="border py-2.5 text-center">{item.name}</td>
+                <td className="border py-2.5 text-center">{item.position}</td>
                 <td className="border py-2.5 text-center">
-                  {item.activity_type}
+                  {item.employment_status}
                 </td>
-                <td className="border py-2.5 text-center">{item.client}</td>
                 <td className="border py-2.5 text-center">
                   <div className="flex w-full h-full justify-center items-center">
                     <BiEdit
                       className="cursor-pointer mr-2"
                       onClick={() =>
-                        navigate(`/admin/pelayanan/edit/${id}/${item.id}`)
+                        navigate(`/admin/about/employee/edit/${item.id}`)
                       }
                       size={30}
                     />
@@ -266,7 +302,10 @@ const DetailService = () => {
                       fill="red"
                       size={24}
                       className="cursor-pointer"
-                      onClick={() => handleDeleteKlien(item.id)}
+                      onClick={() => {
+                        handleDeleteProfile(item.id);
+                        deleteProfile(item.file_name);
+                      }}
                     />
                   </div>
                 </td>
@@ -279,4 +318,4 @@ const DetailService = () => {
   );
 };
 
-export default DetailService;
+export default AboutUs;
