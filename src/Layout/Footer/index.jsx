@@ -4,6 +4,7 @@ import wording from "../../wording.json";
 import { LayoutContext } from "../../context/LayoutContext";
 import { FaArrowRight } from "react-icons/fa";
 import { HiMail } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const { language } = useContext(LayoutContext);
@@ -11,11 +12,11 @@ const Footer = () => {
   const navigation = [
     {
       title: wording[language].nav.markets,
-      path: "/markets",
+      path: "/services",
     },
     {
       title: wording[language].nav.news,
-      path: "/news",
+      path: "/article",
     },
     {
       title: wording[language].nav.career,
@@ -50,12 +51,13 @@ const Footer = () => {
         {/* <div className="[&>*]:text-white [&>*]:text-[18px] [&>*]:font-semibold"> */}
         <div className="w-[326px]">
           {navigation.map((nav, index) => (
-            <div
+            <Link
+              to={nav.path}
               key={index}
               className="flex justify-between border-b-2 border-white font-semibold text-xs md:text-[18px] text-white py-3 pb-1"
             >
               {nav.title} <FaArrowRight fill="white" />
-            </div>
+            </Link>
           ))}
           {/* </div> */}
         </div>
