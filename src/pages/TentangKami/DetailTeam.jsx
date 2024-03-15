@@ -35,18 +35,18 @@ const DetailTeam = () => {
   }, []);
   return (
     <div>
-      <div className="w-full h-[600px] bg-[#004723] flex justify-between items-end px-[110px]">
+      <div className="w-full h-[190px] md:h-[600px] bg-[#004723] rounded-b-xl flex justify-between items-end px-[30px] md:px-[110px]">
         <div className="h-full">
-          <h1 className="text-white text-[48px] font-bold mt-[186px]">{person.name}</h1>
-          <h3 className="text-white font-bold text-xl">{person.position}</h3>
+          <h1 className="text-white md:text-[48px] font-bold md:mt-[186px] mt-[70px]">{person.name}</h1>
+          <h3 className="text-white font-bold text-xs md:text-xl">{person.position}</h3>
         </div>
         <img
-          className="w-[350px] h-[450px] object-cover"
+          className="w-[75px] h-[105px] md:w-[350px] md:h-[450px] object-cover"
           src={person.image_url}
           alt=""
         />
       </div>
-      <div className="px-[110px] my-6" dangerouslySetInnerHTML={{__html:person.description}}></div>
+      <div className="px-[30px] md:px-[110px] my-6 text-xs md:text-base" dangerouslySetInnerHTML={{__html:person.description}}></div>
     </div>
   );
 };

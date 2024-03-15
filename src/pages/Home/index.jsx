@@ -286,7 +286,7 @@ const Home = () => {
         />
       </div>
 
-      <div className="relative w-full px-[30px] md:px-[110px] ">
+      <div className="relative w-full px-[30px] md:px-[110px] mt-6">
         <img
           loading="lazy"
           className="w-full object-cover rounded-2xl"
@@ -361,7 +361,7 @@ const Home = () => {
       </div>
 {/* 
       <div className="w-full px-[30px] py-2 md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[110px] flex-col"> */}
-      <div className="flex justify-between md:flex-row flex-col-reverse pl-[30px] md:pl-[110px] mt-[92px] md:mt-[200px]">
+      <div className="flex justify-between md:flex-row flex-col-reverse pl-[30px] md:pl-[110px] mt-[42px] md:mt-[200px]">
         <div className="flex justify-center flex-col">
           <p className="text-xs md:text-2xl tracking-widest mt-5">
             Mulailah perjalanan karier untuk
