@@ -45,7 +45,7 @@ const Layout = ({ children }) => {
           {pathname === "/" || isSelectedRoute() ? (
             <Fragment>
               {isSelectedRoute() ? <BackHeader /> : <Header /> }
-              <div className="min-h-screen">{children}</div>
+              <div className="min-h-screen pb-8">{children}</div>
               <Footer />
             </Fragment>
           ) : pathname === "/admin/login" ? (
@@ -53,7 +53,7 @@ const Layout = ({ children }) => {
           ) : (
             <Fragment>
               <Header />
-              <div className="min-h-screen pt-[122px] pb-[100px]">{children}</div>
+              <div className="min-h-screen pt-[75px] pb-8 md:pt-[122px] md:pb-[100px]">{children}</div>
               <Footer />
             </Fragment>
           )}
