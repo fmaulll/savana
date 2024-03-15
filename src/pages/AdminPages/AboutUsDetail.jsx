@@ -116,10 +116,11 @@ const AboutUsDetail = () => {
   };
 
   const handleDeletePhoto = () => {
-    setDataRequest((prev) => {
+    setAboutDetail((prev) => {
       return {
         ...prev,
-        image_url: "",
+        logo_url: "",
+        logo_name: "",
         file: "",
       };
     });
@@ -218,9 +219,10 @@ const AboutUsDetail = () => {
   };
 
   const uploadLogo = async (file) => {
+    const fileName = file.name + Date.now()
     const { data, error } = await supabase.storage
       .from("savana")
-      .upload(`logo/` + file.name + Date.now(), file, {
+      .upload(`logo/` + fileName, file, {
         cacheControl: "3600",
         upsert: false,
       });
@@ -228,7 +230,7 @@ const AboutUsDetail = () => {
     if (data.path) {
       return {
         logo_url: data.path ? getPhotosUrl(data.path) : "",
-        logo_name: file.name,
+        logo_name: fileName,
       };
     }
 
