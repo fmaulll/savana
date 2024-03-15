@@ -18,6 +18,7 @@ import DetailProyek from "../pages/Proyek/DetailProyek";
 import Proyek from "../pages/Proyek";
 import TentangKami from "../pages/TentangKami";
 import DetailTeam from "../pages/TentangKami/DetailTeam";
+import DetailTentangKami from "../pages/TentangKami/DetailTentangKami";
 
 export const NonAuthRoutes = [
   {
@@ -51,6 +52,10 @@ export const NonAuthRoutes = [
   {
     path: "/about",
     component: <TentangKami />,
+  },
+  {
+    path: "/about/detail",
+    component: <DetailTentangKami />,
   },
   {
     path: "/about/team/:id",
