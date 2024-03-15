@@ -8,7 +8,7 @@ const Button = ({ children, onClick, type, className, ...other }) => {
   if (type === "orange") {
     btnType = "bg-[#ffa140] hover:bg-[#FFB66B] text-white"
   }
-  return <button {...other} className={`${btnType} whitespace-nowrap font-semibold rounded-lg border-none outline-none ${className ? className : 'py-4 px-6 w-min h-min'}`} onClick={onClick}>{children}</button>;
+  return <button {...other} className={`${btnType} md:text-base text-xs whitespace-nowrap font-semibold rounded-lg border-none outline-none ${className ? className : 'py-4 px-6 w-min h-min'}`} onClick={onClick}>{children}</button>;
 };
 
 export default Button;

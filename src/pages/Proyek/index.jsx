@@ -36,30 +36,30 @@ const Proyek = () => {
     getProjects();
   }, [offset]);
   return (
-    <div className="w-full px-[30px] mt-10 flex md:items-center md:px-[110px] flex-col">
-      <h1 className="text-center text-3xl font-bold border-b-[3px] border-[#004723] py-[10px]">
+    <div className="w-full px-[30px] md:mt-10 flex items-center md:px-[110px] flex-col">
+      <h1 className="text-center text-3xl font-bold border-b-[3px] w-min whitespace-nowrap border-[#004723] py-[10px]">
         Proyek
       </h1>
-      <div className="w-full mt-14">
+      <div className="w-full mt-6 md:mt-14">
         {project.map((item, index) => (
           <div
             key={index}
             className={`${index !== 0 && "mt-12"} relative w-full`}
           >
             <img
-              className="w-full h-[506px] object-cover rounded-lg"
+              className="w-full h-[232px] md:h-[506px] object-cover rounded-lg"
               src={item.image_url}
               alt=""
             />
             <div className="w-full absolute left-0 bottom-0 px-4 py-6">
-              <span className="font-bold text-xl text-white">
+              <span className="font-bold text-xs md:text-xl text-white">
                 {formatDateMonthYear(item.created_at)}
               </span>
-              <h1 className="text-2xl text-white font-bold mt-5">
+              <h1 className="text-xs md:text-2xl text-white font-bold mt-3 md:mt-5">
                 {item.title}
               </h1>
-              <div className="flex justify-end w-full mt-5">
-                <Link to={`/article/project/${item.id}`} className="text-white border-b-2">Lihat Detail</Link>
+              <div className="flex justify-end w-full mt-3 md:mt-5">
+                <Link to={`/article/project/${item.id}`} className="text-white border-b-2 text-xs md:text-base">Lihat Detail</Link>
               </div>
             </div>
           </div>

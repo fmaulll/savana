@@ -100,37 +100,42 @@ const DetailTentangKami = () => {
     getAboutUs();
   }, []);
   return (
-    <div className="pb-20">
+    <div className="">
       <div className="relative w-full bg-[#004723]">
-        <div className="w-full absolute items-center flex justify-center flex-col mt-[192px]">
+        <div className="w-full absolute items-center flex justify-center flex-col mt-[75px] md:mt-[192px]">
           <img
-            className="max-w-[250px] max-h-[250px] object-cover"
+            className="max-w-[90px] max-h-[90px] md:max-w-[250px] md:max-h-[250px] object-cover"
             src={aboutUs.logo_url}
             alt={aboutUs.logo_name}
           />
-          <h1 className="text-white text-[64px] font-bold">
+          <h1 className="text-white text-base md:text-[64px] font-bold">
             {aboutUs.company}
           </h1>
-          <h3 className="text-white font-bold text-xl">
+          <h3 className="text-white font-medium text-xs md:text-xl">
             {aboutUs.licence_number}
           </h3>
         </div>
         <img
-          className="w-full h-[600px] object-cover"
+          className="w-full h-[190px] md:h-[600px] object-cover"
           src={Background}
           alt=""
         />
       </div>
       <div
-        className="px-[110px] my-6 text-xl"
+        className="px-[30px] md:px-[110px] my-6 text-xs md:text-xl"
         dangerouslySetInnerHTML={{ __html: aboutUs.description }}
       ></div>
-      <div className="px-[110px]">
+      <div className="px-[30px] md:px-[110px]">
         {sections.map((item, index) => (
-          <div key={index} className="mt-14">
-            <h1 className="text-[72px] font-bold leading-loose">{item.title}</h1>
-            <div className="text-xl" dangerouslySetInnerHTML={{ __html: item.description }}></div>
-            <div className="grid grid-cols-3 gap-[70px] mt-8">
+          <div key={index} className="mt-6 md:mt-14">
+            <h1 className="text-xl md:text-[72px] font-bold leading-loose">{item.title}</h1>
+            <div className="text-xs md:text-xl" dangerouslySetInnerHTML={{ __html: item.description }}></div>
+            <div className="hidden md:grid grid-cols-3 gap-[70px] mt-8">
+              {item.dataDocumentation.map((img, idx) => (
+                <img onClick={() => window.open(img.url)} className="h-[270px] object-cover w-full rounded-lg border cursor-pointer" key={idx} src={img.url} alt={img.name} />
+              ))}
+            </div>
+            <div className="flex md:hidden overflow-x-scroll mt-4">
               {item.dataDocumentation.map((img, idx) => (
                 <img onClick={() => window.open(img.url)} className="h-[270px] object-cover w-full rounded-lg border cursor-pointer" key={idx} src={img.url} alt={img.name} />
               ))}

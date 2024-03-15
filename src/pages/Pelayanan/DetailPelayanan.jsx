@@ -81,26 +81,26 @@ const DetailPelayanan = () => {
     <div className="w-full flex md:items-center flex-col">
       <div className="relative w-full flex justify-center">
         <img
-          className="object-cover w-full h-[500px] rounded-b-[50%]"
+          className="object-cover w-full h-[140px] md:h-[500px] rounded-b-[50%]"
           src={detailService.image_url}
           alt={detailService.name}
         />
-        <h1 className="absolute bottom-[70px] text-white font-bold text-[64px]">
+        <h1 className="absolute bottom-[20px] md:bottom-[70px] text-white font-bold text-xl md:text-[64px]">
           {detailService.name}
         </h1>
       </div>
-      <div className="px-[110px] w-full mt-14">
+      <div className="px-[30px] md:px-[110px] w-full mt-4 md:mt-14">
         <div className="flex items-center">
-          <Link className="font-bold text-xl mr-2" to="/">
+          <Link className="font-bold text-[10px] md:text-xl mr-2" to="/">
             Home
           </Link>{" "}
           <FaChevronRight />{" "}
-          <Link className="ml-2 font-bold text-xl" to="/services">
+          <Link className="ml-2 font-bold text-[10px] md:text-xl" to="/services">
             Pelayanan
           </Link>
         </div>
-        <div className="flex justify-center flex-col items-center">
-          <h1 className="text-center text-3xl font-bold border-b-[3px] border-[#004723] py-[10px] w-min whitespace-nowrap">
+        <div className="mt-3 flex justify-center flex-col items-center">
+          <h1 className="text-center text-xl md:text-3xl font-bold border-b-[3px] border-[#004723] py-[10px] w-min whitespace-nowrap">
             Proyek Kami
           </h1>
           <div
@@ -114,36 +114,36 @@ const DetailPelayanan = () => {
             <Link to={`/article/project/${item.id}`}>
               <div
                 key={index}
-                className="w-full px-12 py-6 rounded-xl border flex items-center"
+                className="w-full px-3 py-2 md:px-12 md:py-6 rounded-xl border flex items-center"
               >
                 <img
                   loading="lazy"
-                  className="border rounded-xl w-[260px] h-[168px] mr-6"
+                  className="border rounded-xl w-[111px] md:w-[260px] h-[100px] md:h-[168px] mr-4 md:mr-6"
                   src={item.image_url}
                   alt={item.title}
                 />
                 <div className="flex justify-center items-start flex-col w-full">
-                  <span className="font-bold text-[#B7B7B7] ">
+                  <span className="font-bold text-[#B7B7B7] text-[10px] md:text-base">
                     {formatDate(item.start_date)} - {formatDate(item.end_date)}
                   </span>
-                  <h1 className="text-xl font-medium mt-2">{item.title}</h1>
-                  <div className="grid grid-cols-2 w-full mt-4">
+                  <h1 className="md:text-xl text-[11px] font-medium mt-2">{item.title}</h1>
+                  <div className="grid grid-cols-1 md:grid-cols-2 w-full mt-2 md:mt-4">
                     <div className="flex items-center">
                       <FaLocationDot fill="#929292" className="mr-2" />{" "}
-                      <span className="text-[18px] text-[#929292] font-medium">
+                      <span className="text-[10px] md:text-[18px] text-[#929292] font-medium">
                         {item.location}
                       </span>
                     </div>
-                    <div className="flex items-center">
+                    <div className="flex items-center mt-1">
                       <FaBuilding fill="#929292" className="mr-2" />{" "}
-                      <span className="text-[18px] text-[#929292] font-medium">
+                      <span className="text-[10px] md:text-[18px] text-[#929292] font-medium">
                         {item.client}
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center mt-4">
+                  <div className="flex items-center mt-1 md:mt-4">
                     <FaBriefcase fill="#929292" className="mr-2" />
-                    <span className="font-bold text-[#B7B7B7] ">
+                    <span className="text-[10px] md:text-[18px] font-bold text-[#B7B7B7] ">
                       {item.activity_type}
                     </span>
                   </div>
