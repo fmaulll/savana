@@ -6,8 +6,8 @@ import Button from '../../components/Button'
 const ContactUs = () => {
   return (
     <div className="w-full px-[30px] flex justify-center md:justify-between md:items-center md:px-[110px] flex-col">
-        <img className='rounded-lg object-cover mt-8' src={Office} alt="" />
-        <form className='w-full border p-3 rounded-lg mt-6'>
+        <img className='rounded-lg object-cover mt-8 w-full' src={Office} alt="" />
+        <form className='max-w-[500px] border p-3 rounded-lg mt-6'>
             <label className='mt-3' htmlFor="email">Email</label>
             <Input id="email" type='text' />
             <label className='mt-3' htmlFor="subject">Subject</label>
