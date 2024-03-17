@@ -45,8 +45,8 @@ const Pelayanan = () => {
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-x-[78px] gap-y-[32px] mt-6 md:mt-14">
         {services.map((item, index) => (
-          <Link to={`/services/detail/${item.id}`}>
-            <div className="w-full relative flex justify-center" key={index}>
+          <Link to={`/services/detail/${item.id}`} key={index}>
+            <div className="w-full relative flex justify-center">
               <img
                 className="w-full h-[232px] md:h-[432px] rounded-xl border object-cover"
                 src={item.image_url}

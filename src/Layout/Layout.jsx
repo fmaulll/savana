@@ -12,23 +12,36 @@ import AuthorizedSidebar from "./Authorized/Sidebar";
 import BackHeader from "./Header/BackHeader";
 
 const Layout = ({ children }) => {
-  const { loading, message, status, user, setUser, setMessage, setStatus, setLoading } =
-    useContext(LayoutContext);
+  const {
+    loading,
+    message,
+    status,
+    user,
+    setUser,
+    setMessage,
+    setStatus,
+    setLoading,
+  } = useContext(LayoutContext);
   const { pathname } = useLocation();
   const [openNewPost, setOpenNewPost] = useState(false);
 
   const isSelectedRoute = () => {
-    if (pathname.includes('/about/team')) {
-      return true
+    if (pathname.includes("/about/team")) {
+      return true;
     }
-    if (pathname.includes('/services/detail')) {
-      return true
+    if (pathname.includes("/services/detail")) {
+      return true;
     }
-    if (pathname.includes('/about/detail')) {
-      return true
+    if (pathname.includes("/about/detail")) {
+      return true;
     }
     return false;
-  }
+  };
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
 
   return (
     <div className="bg-white">
@@ -37,14 +50,14 @@ const Layout = ({ children }) => {
           <AuthorizedHeader />
           <AuthorizedSidebar />
           <div className="pt-[195px] pl-[300px] pr-9 pb-8 min-h-screen">
-            {children} 
+            {children}
           </div>
         </Fragment>
       ) : (
         <Fragment>
           {pathname === "/" || isSelectedRoute() ? (
             <Fragment>
-              {isSelectedRoute() ? <BackHeader /> : <Header /> }
+              {isSelectedRoute() ? <BackHeader /> : <Header />}
               <div className="min-h-screen pb-8">{children}</div>
               <Footer />
             </Fragment>
@@ -53,7 +66,9 @@ const Layout = ({ children }) => {
           ) : (
             <Fragment>
               <Header />
-              <div className="min-h-screen pt-[75px] pb-8 md:pt-[122px] md:pb-[100px]">{children}</div>
+              <div className="min-h-screen pt-[75px] pb-8 md:pt-[122px] md:pb-[100px]">
+                {children}
+              </div>
               <Footer />
             </Fragment>
           )}

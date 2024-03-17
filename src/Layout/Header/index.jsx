@@ -100,10 +100,11 @@ const Header = () => {
         </div>
 
         <div
+          onClick={() => navigate('/contact')}
           className={`hidden md:flex border-2 rounded-[24px] py-3 px-6 text-lg font-bold cursor-pointer ${
             !scrolling && window.location.pathname === "/"
               ? "bg-transparent border-white text-white"
-              : "bg-white border-[#00391C] text-[#00391C]"
+              : window.location.pathname === '/contact' ? "text-white bg-[#FFB66B]" : "bg-white border-[#00391C] text-[#00391C]"
           }`}
         >
           Kontak Kami
@@ -116,7 +117,7 @@ const Header = () => {
             !isOpen && !scrolling && window.location.pathname === "/"
               ? "text-white"
               : "text-[#002B15]"
-          }`}
+          } md:hidden block`}
         />
       </div>
       {isOpen && (

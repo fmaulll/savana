@@ -8,7 +8,7 @@ import TeamPhoto from "../../assets/team.png";
 import { supabase } from "../../hooks/supabase";
 import KementrianLogo from "../../assets/kementrian.png";
 import CareerPhoto from "../../assets/CareerPhoto.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowCircleRight, FaArrowCircleLeft } from "react-icons/fa";
 import HomeLoading from "../../components/HomeLoading";
 import { formatFullDate } from "../../hooks/formatDate";
@@ -46,6 +46,7 @@ const initBerita = [
 ];
 
 const Home = () => {
+  const navigate = useNavigate();
   const { language, setMessage, setStatus, setUser } =
     useContext(LayoutContext);
   const [tabValue, setTabValue] = useState(0);
@@ -196,7 +197,13 @@ const Home = () => {
           rightControl=" "
         >
           {images.map((item, index) => (
-            <img className="h-[300px] h-full object-cover" loading="lazy" key={index} alt={item.name} src={item.url} />
+            <img
+              className="h-[300px] h-full object-cover"
+              loading="lazy"
+              key={index}
+              alt={item.name}
+              src={item.url}
+            />
           ))}
         </Carousel>
         <div className="absolute px-[30px]">
@@ -209,7 +216,8 @@ const Home = () => {
           </p>
           <div className="flex md:justify-center items-center mt-10">
             <div
-              className={`rounded-[24px] py-3 px-6 text-xs md:text-lg font-bold cursor-pointer bg-white text-[#00391C] whitespace-nowrap w-min mr-[30px] cursor-pointer`}
+              className={`rounded-[24px] py-3 px-6 text-xs md:text-lg font-bold cursor-pointer bg-white text-[#00391C] whitespace-nowrap w-min mr-4 md:mr-[30px] cursor-pointer`}
+              onClick={() => navigate("/contact")}
             >
               Contact Us
             </div>
@@ -221,8 +229,15 @@ const Home = () => {
           </div>
         </div>
         <div className="h-[10%] bg-[#D9E3DE] w-full flex justify-center items-center">
-          <i className="mr-3 text-[10px] md:text-base text-[#929292]">Licenced By: </i>
-          <img loading="lazy" src={KementrianLogo} alt="" className="mr-3 w-[32px]" />
+          <i className="mr-3 text-[10px] md:text-base text-[#929292]">
+            Licenced By:{" "}
+          </i>
+          <img
+            loading="lazy"
+            src={KementrianLogo}
+            alt=""
+            className="mr-3 w-[32px]"
+          />
           <h3 className="text-[#929292] text-[10px] md:text-base">
             Kementrian Lingkungan Hidup dan Kehutanan
           </h3>
@@ -238,7 +253,11 @@ const Home = () => {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-9 mt-4 md:mt-[52px]">
           {pelayanan.map((item, index) => (
-            <div className="relative flex items-end justify-center" key={index}>
+            <div
+              onClick={() => navigate(`/services/detail/${item.id}`)}
+              className="relative flex items-end justify-center"
+              key={index}
+            >
               <img
                 loading="lazy"
                 className="h-[230px] w-full object-cover rounded-lg cursor-pointer border"
@@ -263,7 +282,9 @@ const Home = () => {
 
       <div className="px-[30px] mt-10 md:mt-[72px] flex justify-center md:justify-between items-center md:px-[110px] md:flex-row flex-col-reverse">
         <div>
-          <h2 className="text-xl md:text-[32px] font-semibold tracking-[6.4px] text-center md:text-start">SAVANA</h2>
+          <h2 className="text-xl md:text-[32px] font-semibold tracking-[6.4px] text-center md:text-start">
+            SAVANA
+          </h2>
           <h3 className="text-xs md:text-2xl text-[#A5A5A5] font-semibold text-center md:text-start">
             Konsultan Lingkungan
           </h3>
@@ -299,7 +320,9 @@ const Home = () => {
       </div>
 
       <div className="w-full px-[30px] md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[110px] flex-col mt-[42px] md:mt-[115px]">
-        <h1 className="font-bold text-xl md:text-3xl tracking-widest text-center">PROYEK</h1>
+        <h1 className="font-bold text-xl md:text-3xl tracking-widest text-center">
+          PROYEK
+        </h1>
         <div className="w-full flex justify-between items-center md:mt-9 mt-3">
           <div
             className={``}
@@ -311,9 +334,16 @@ const Home = () => {
             }}
           >
             <FaArrowCircleLeft
+              size={50}
+              fill={`${tabValue != 0 ? "#004723" : "gray"}`}
+              className={`hidden md:block ${
+                tabValue == 0 ? "cursor-not-allowed" : "cursor-pointer"
+              }`}
+            />
+            <FaArrowCircleLeft
               size={24}
               fill={`${tabValue != 0 ? "#004723" : "gray"}`}
-              className={`${
+              className={`block md:hidden ${
                 tabValue == 0 ? "cursor-not-allowed" : "cursor-pointer"
               }`}
             />
@@ -329,7 +359,9 @@ const Home = () => {
                     alt=""
                   />
                   <div className="absolute left-[16px] bottom-[16px]">
-                    <span className="text-white text-[10px] md:text-base">{item.start_date}</span>
+                    <span className="text-white text-[10px] md:text-base">
+                      {item.start_date}
+                    </span>
                     <p className="text-xs md:text-lg text-white mt-2 md:mt-5 font-semibold">
                       {item.title}
                     </p>
@@ -350,7 +382,16 @@ const Home = () => {
             <FaArrowCircleRight
               size={24}
               fill={`${tabValue + 2 > proyek.length - 1 ? "gray" : "#004723"}`}
-              className={`${
+              className={`block md:hidden ${
+                tabValue + 2 > proyek.length - 1
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer"
+              }`}
+            />
+            <FaArrowCircleRight
+              size={50}
+              fill={`${tabValue + 2 > proyek.length - 1 ? "gray" : "#004723"}`}
+              className={`hidden md:block ${
                 tabValue + 2 > proyek.length - 1
                   ? "cursor-not-allowed"
                   : "cursor-pointer"
@@ -359,7 +400,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-{/* 
+      {/* 
       <div className="w-full px-[30px] py-2 md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[110px] flex-col"> */}
       <div className="flex justify-between md:flex-row flex-col-reverse pl-[30px] md:pl-[110px] mt-[42px] md:mt-[200px]">
         <div className="flex justify-center flex-col">
@@ -381,7 +422,9 @@ const Home = () => {
       </div>
 
       <div className="w-full px-[30px] md:py-[72px] flex justify-center md:justify-between md:items-center md:px-[110px] flex-col mt-10 md:mt-[128px]">
-        <h1 className="font-bold text-xl md:text-3xl tracking-widest text-center">KLIEN KAMI</h1>
+        <h1 className="font-bold text-xl md:text-3xl tracking-widest text-center">
+          KLIEN KAMI
+        </h1>
         {klien.length > 0 ? (
           <div className="grid grid-cols-5 md:grid-cols-7 w-full gap-[64px] mt-12">
             {klien.map((item, index) => (
@@ -407,7 +450,11 @@ const Home = () => {
         <div className="w-full">
           {proyek.map((item, index) => (
             <Link key={index} to={`/article/project/${item.id}`}>
-              <div className={`${index !== 0 && 'mt-4 md:mt-8'} w-full px-4 md:px-12 py-3 md:py-6 rounded-xl border flex items-center`}>
+              <div
+                className={`${
+                  index !== 0 && "mt-4 md:mt-8"
+                } w-full px-4 md:px-12 py-3 md:py-6 rounded-xl border flex items-center`}
+              >
                 <img
                   loading="lazy"
                   className="border rounded-xl w-[102px] md:w-[260px] h-[78px] md:h-[168px] mr-6 object-cover"
@@ -418,8 +465,12 @@ const Home = () => {
                   <span className="font-medium text-[#B7B7B7] text-[10px] md:text-base">
                     {formatFullDate(item.created_at)}
                   </span>
-                  <h1 className="text-xs md:text-xl font-bold mt-2 md:mt-6 ">{item.title}</h1>
-                  <h3 className="text-[10px] md:text-base font-bold mt-2 md:mt-6">{item.keyword}</h3>
+                  <h1 className="text-xs md:text-xl font-bold mt-2 md:mt-6 ">
+                    {item.title}
+                  </h1>
+                  <h3 className="text-[10px] md:text-base font-bold mt-2 md:mt-6">
+                    {item.keyword}
+                  </h3>
                 </div>
               </div>
             </Link>
