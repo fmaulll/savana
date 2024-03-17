@@ -216,7 +216,8 @@ const Home = () => {
           </p>
           <div className="flex md:justify-center items-center mt-10">
             <div
-              className={`rounded-[24px] py-3 px-6 text-xs md:text-lg font-bold cursor-pointer bg-white text-[#00391C] whitespace-nowrap w-min mr-[30px] cursor-pointer`}
+              className={`rounded-[24px] py-3 px-6 text-xs md:text-lg font-bold cursor-pointer bg-white text-[#00391C] whitespace-nowrap w-min mr-4 md:mr-[30px] cursor-pointer`}
+              onClick={() => navigate("/contact")}
             >
               Contact Us
             </div>
