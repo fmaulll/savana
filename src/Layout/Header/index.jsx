@@ -116,7 +116,7 @@ const Header = () => {
             !isOpen && !scrolling && window.location.pathname === "/"
               ? "text-white"
               : "text-[#002B15]"
-          }`}
+          } md:hidden block`}
         />
       </div>
       {isOpen && (
